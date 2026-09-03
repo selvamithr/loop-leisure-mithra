@@ -1,0 +1,79 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Payment | Loop & Leisure by Mithra{% endblock %}
+{% block meta_description %}Complete your advance payment to begin crafting.{% endblock %}
+
+{% block content %}
+    {% include 'partials/navbar.html' %}
+
+    <main class="section" style="padding-top: var(--spacing-xl); min-height: 70vh;">
+        <div class="container flex-center">
+            <div class="card" style="max-width: 600px; width: 100%; padding: var(--spacing-xl);">
+                <div class="text-center" style="margin-bottom: var(--spacing-lg);">
+                    <h1 style="font-family: var(--font-family-logo); font-size: var(--text-h2); color: var(--color-primary); margin-bottom: var(--spacing-sm);">Order Placed!</h1>
+                    <p style="color: var(--color-text-muted);">Your order <strong>{{ order.order_number }}</strong> has been created successfully.</p>
+                </div>
+
+                <div style="background: var(--color-background); padding: var(--spacing-md); border-radius: var(--radius-md); border: 1px solid var(--color-border); margin-bottom: var(--spacing-lg);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-xs);">
+                        <span>Total Amount:</span>
+                        <strong>&#8377;{{ '%.2f' % order.total_amount }}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: var(--color-accent-gold); font-size: 1.1rem; font-weight: var(--fw-medium);">
+                        <span>Advance Payment Required (50%):</span>
+                        <strong>&#8377;{{ '%.2f' % order.advance_amount }}</strong>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: var(--spacing-lg);">
+                    <p style="margin-bottom: var(--spacing-md);">Pay securely using Google Pay or any UPI app.</p>
+                    
+                    {% set amount_to_pay = order.advance_amount if order.payment_status in ('Pending', 'Rejected', 'Pending Verification') else order.remaining_amount %}
+                    
+                    <a href="upi://pay?pa=7904358689@axl&pn=Loop%20And%20Leisure&am={{ '%.2f' % amount_to_pay }}&tr={{ order.order_number }}&cu=INR" 
+                       class="btn btn-primary" 
+                       style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: var(--spacing-md); padding: 12px 24px; font-size: 1.1rem; background-color: #2563eb; color: #ffffff; text-decoration: none; border-radius: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                        Pay with Google Pay / UPI
+                    </a>
+
+                    <div style="background-color: var(--color-background); padding: var(--spacing-md); border-radius: var(--radius-md); display: inline-block; border: 1px dashed var(--color-border); width: 100%; max-width: 300px;">
+                        <p style="margin: 0 0 var(--spacing-xs) 0; color: var(--color-text-muted); font-size: 0.9rem;">Or transfer to this UPI ID:</p>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: var(--spacing-sm);">
+                            <strong id="upi-id" style="font-size: 1.1rem; color: var(--color-text);">7904358689@axl</strong>
+                            <button type="button" onclick="copyUpiId()" class="btn" style="padding: 4px 12px; font-size: 0.875rem; background: #e2e8f0; color: #334155; border: none; border-radius: 4px; cursor: pointer;">Copy</button>
+                        </div>
+                        <span id="copy-msg" style="display:block; color: #16a34a; font-size: 0.8rem; margin-top: 8px; opacity: 0; transition: opacity 0.3s;">Copied to clipboard!</span>
+                    </div>
+                </div>
+
+                <script>
+                function copyUpiId() {
+                    const upiId = document.getElementById('upi-id').innerText;
+                    navigator.clipboard.writeText(upiId).then(() => {
+                        const msg = document.getElementById('copy-msg');
+                        msg.style.opacity = '1';
+                        setTimeout(() => { msg.style.opacity = '0'; }, 2000);
+                    });
+                }
+                </script>
+
+                <form method="POST" action="{{ url_for('customer.payment', order_number=order.order_number) }}" enctype="multipart/form-data">
+                    <div class="form-group" style="margin-bottom: var(--spacing-md);">
+                        <label for="upi_reference" class="form-label">UPI Reference Number (Transaction ID)</label>
+                        <input type="text" id="upi_reference" name="upi_reference" class="form-control" required placeholder="Enter 12-digit UPI reference">
+                    </div>
+                    <div class="form-group" style="margin-bottom: var(--spacing-xl);">
+                        <label for="payment_screenshot" class="form-label">Payment Screenshot</label>
+                        <input type="file" id="payment_screenshot" name="payment_screenshot" class="form-control" accept="image/*">
+                        <small style="color: var(--color-text-muted); font-size: var(--text-caption);">Upload a screenshot of successful payment.</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Submit Payment Details</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    {% include 'partials/footer.html' ignore missing %}
+{% endblock %}

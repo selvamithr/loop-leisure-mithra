@@ -1,0 +1,72 @@
+<!--
+========================================================================
+Loop & Leisure by Mithra - Base Email Layout
+========================================================================
+Description: Base HTML framework for automated store notifications and transactional emails.
+Contains universal structural styles optimized for various mail clients.
+========================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block email_title %}Loop & Leisure{% endblock %}</title>
+    
+    <!-- inline styling for email client compatibility -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #FAF7F2;
+            font-family: 'Inter', Arial, sans-serif;
+            color: #2C2520;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #FFFFFF;
+            border: 1px solid #E1D5CB;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #C39A87;
+            padding: 24px;
+            text-align: center;
+        }
+        .body {
+            padding: 32px 24px;
+            line-height: 1.6;
+        }
+        .footer {
+            background-color: #F5EFEB;
+            padding: 24px;
+            text-align: center;
+            font-size: 12px;
+            color: #6E6259;
+            border-top: 1px solid #E1D5CB;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Brand Header Section -->
+        <div class="header">
+            <!-- Header elements will inherit here -->
+        </div>
+
+        <!-- Dynamic Message Content Section -->
+        <div class="body">
+            {% block email_content %}{% endblock %}
+        </div>
+
+        <!-- System Footer & Policies Section -->
+        <div class="footer">
+            <!-- Footer contact and copyright details will go here -->
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Payment Submitted | Loop & Leisure by Mithra{% endblock %}
+{% block meta_description %}Your payment has been successfully submitted.{% endblock %}
+
+{% block content %}
+    {% include 'partials/navbar.html' %}
+
+    <main class="section" style="padding-top: var(--spacing-xl); min-height: 70vh; display: flex; align-items: center; justify-content: center;">
+        <div class="container flex-center">
+            <div class="card" style="max-width: 600px; width: 100%; padding: var(--spacing-xl); text-align: center;">
+                
+                <!-- Success Icon -->
+                <div style="width: 80px; height: 80px; background-color: #dcfce3; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--spacing-lg);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+
+                <h1 style="font-family: var(--font-family-logo); font-size: var(--text-h2); color: var(--color-primary); margin-bottom: var(--spacing-sm);">Payment Submitted!</h1>
+                
+                <p style="color: var(--color-text); font-size: 1.1rem; margin-bottom: var(--spacing-md); line-height: 1.6;">
+                    Your payment for order <strong>{{ order.order_number }}</strong> has been submitted successfully and is awaiting verification.
+                </p>
+
+                <p style="color: var(--color-text-muted); margin-bottom: var(--spacing-xl);">
+                    Our team will verify the payment shortly. You will be notified once the production begins.
+                </p>
+
+                <div style="display: flex; gap: var(--spacing-sm); justify-content: center;">
+                    <a href="{{ url_for('customer.my_orders') }}" class="btn btn-primary">View My Orders</a>
+                    <a href="{{ url_for('customer.shop') }}" class="btn btn-outline">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include 'partials/footer.html' ignore missing %}
+{% endblock %}

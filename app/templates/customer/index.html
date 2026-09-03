@@ -1,0 +1,592 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Loop & Leisure by Mithra | Premium Hand-crafted Crochet{% endblock %}
+{% block meta_description %}Discover handcrafted crochet bouquets, flowers, keychains and customised gifts by Mithra. Every piece made with love.{% endblock %}
+
+{% block content %}
+
+    <!-- ── Navigation Bar ── -->
+    {% include 'partials/navbar.html' %}
+
+    <!-- ================================================================
+         HERO SECTION
+         Two-column layout (40/60):
+           LEFT  → badge, heading, tagline, dual CTA buttons
+           RIGHT → image carousel with fade animation, arrows + dots
+    ================================================================ -->
+    <section class="hero-section" id="hero" aria-label="Hero">
+        <div class="container hero-container">
+
+            <!-- ── LEFT: Copy Column (40%) ── -->
+            <div class="hero-content" data-animate="fade-up">
+
+                <!-- Small eyebrow badge -->
+                <span class="hero-badge" id="heroBadge">Founder • Loop & Leisure</span>
+
+                <h1 class="hero-heading" id="heroHeading">Meet Mithra, Our Founder</h1>
+
+                <p class="hero-subtext" id="heroSubtext">What began as a simple wish to create heartfelt handmade gifts for the people I loved slowly became something much bigger. Every crochet creation at Loop & Leisure is still handcrafted with the same care, patience and joy that inspired my very first gift.</p>
+
+                <div class="hero-actions">
+                    <a href="/shop" class="btn hero-btn-primary" aria-label="Explore the collection">Explore Collection</a>
+                    <a href="/about" class="btn hero-btn-secondary" aria-label="Read our story">Our Story</a>
+                </div>
+
+            </div><!-- /hero-content -->
+
+            <!-- ── RIGHT: Image Carousel (60%) ── -->
+            <div class="hero-carousel-wrap" data-animate="fade-up" data-delay="150">
+
+                <div class="hero-carousel" id="heroCarousel" aria-label="Product showcase carousel" role="region">
+
+                    <!-- Slide Track (fade mode — slides stacked absolutely) -->
+                    <div class="carousel-track" id="carouselTrack">
+
+                        <div class="carousel-slide active" aria-label="Slide 1 of 3"
+                             data-badge="✨ Founder of Loop &amp; Leisure"
+                             data-heading="Meet Mithra"
+                             data-subtext="Hi, I'm Mithra, the creator behind Loop &amp; Leisure. Every crochet creation you see here is handmade with love, patience, and attention to every tiny detail.">
+                            <img
+                                src="{{ url_for('static', filename='images/mithra.jpeg') }}"
+                                alt="Meet Mithra"
+                                class="carousel-img"
+                                loading="eager"
+                                draggable="false"
+                            >
+                        </div>
+
+                        <div class="carousel-slide" aria-label="Slide 2 of 3"
+                             data-badge=""
+                             data-heading="Handmade Crochet Bouquets"
+                             data-subtext="Beautiful everlasting bouquets handcrafted to celebrate birthdays, anniversaries, graduations and every special memory.">
+                            <img
+                                src="{{ url_for('static', filename='images/ChatGPT Image Jul 2, 2026, 10_50_11 PM.png') }}"
+                                alt="Handmade Crochet Bouquets"
+                                class="carousel-img"
+                                loading="lazy"
+                                draggable="false"
+                            >
+                        </div>
+
+                        <div class="carousel-slide" aria-label="Slide 3 of 3"
+                             data-badge=""
+                             data-heading="Personalized Crochet Gifts"
+                             data-subtext="Unique handmade keychains and custom crochet creations designed especially for you.">
+                            <img
+                                src="{{ url_for('static', filename='images/ChatGPT Image Jul 2, 2026, 10_57_55 PM.png') }}"
+                                alt="Personalized Crochet Gifts"
+                                class="carousel-img"
+                                loading="lazy"
+                                draggable="false"
+                            >
+                        </div>
+
+                    </div><!-- /carousel-track -->
+
+                    <!-- Arrow Controls -->
+                    <button class="carousel-arrow carousel-arrow-prev" id="carouselPrev" aria-label="Previous slide">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+
+                    <button class="carousel-arrow carousel-arrow-next" id="carouselNext" aria-label="Next slide">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+
+                </div><!-- /hero-carousel -->
+
+                <!-- Dot Indicators -->
+                <div class="carousel-dots" id="carouselDots" role="tablist" aria-label="Carousel navigation">
+                    <button class="carousel-dot active" data-index="0" role="tab" aria-selected="true"  aria-label="Go to slide 1"></button>
+                    <button class="carousel-dot"        data-index="1" role="tab" aria-selected="false" aria-label="Go to slide 2"></button>
+                    <button class="carousel-dot"        data-index="2" role="tab" aria-selected="false" aria-label="Go to slide 3"></button>
+                </div>
+
+            </div><!-- /hero-carousel-wrap -->
+
+        </div><!-- /hero-container -->
+    </section>
+
+    <!-- ================================================================
+         FEATURED COLLECTIONS SECTION
+    ================================================================ -->
+    <section class="featured-section" id="collections" aria-label="Featured Collections">
+        <div class="container">
+            
+            <!-- Section Header -->
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-label">OUR COLLECTIONS</span>
+                <h2 class="section-heading">Handcrafted Collections</h2>
+                <p class="section-desc">
+                    Discover beautifully handcrafted crochet creations designed to make every occasion memorable.
+                </p>
+            </div>
+
+            <!-- Collections Grid (3 columns) -->
+            <div class="collections-grid">
+                
+                <!-- Card 1: Crochet Bouquets -->
+                <a href="/shop?category=bouquets" class="collection-card" data-animate="fade-up" data-delay="100">
+                    <div class="collection-img-wrap">
+                        <img src="https://picsum.photos/seed/bouquet/600/450" alt="Crochet Bouquets" class="collection-img" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <h3 class="collection-title">Crochet Bouquets</h3>
+                        <p class="collection-text">Elegant everlasting floral arrangements handcrafted with love.</p>
+                        <span class="collection-link">Explore Collection <span aria-hidden="true">&rarr;</span></span>
+                    </div>
+                </a>
+
+                <!-- Card 2: Keychains -->
+                <a href="/shop?category=keychains" class="collection-card" data-animate="fade-up" data-delay="200">
+                    <div class="collection-img-wrap">
+                        <img src="https://picsum.photos/seed/keychains/600/450" alt="Keychains" class="collection-img" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <h3 class="collection-title">Keychains</h3>
+                        <p class="collection-text">Charming miniature crochet companions for your keys or bags.</p>
+                        <span class="collection-link">Explore Collection <span aria-hidden="true">&rarr;</span></span>
+                    </div>
+                </a>
+
+                <!-- Card 3: Home Decor -->
+                <a href="/shop?category=decor" class="collection-card" data-animate="fade-up" data-delay="300">
+                    <div class="collection-img-wrap">
+                        <img src="https://picsum.photos/seed/decor/600/450" alt="Home Decor" class="collection-img" loading="lazy">
+                    </div>
+                    <div class="collection-content">
+                        <h3 class="collection-title">Home Decor</h3>
+                        <p class="collection-text">Beautiful handmade pieces that add warmth to every space.</p>
+                        <span class="collection-link">Explore Collection <span aria-hidden="true">&rarr;</span></span>
+                    </div>
+                </a>
+
+            </div><!-- /collections-grid -->
+            
+        </div>
+    </section>
+
+    <!-- ================================================================
+         WHY CHOOSE US SECTION
+    ================================================================ -->
+    <section class="features-section" aria-label="Why Choose Us">
+        <div class="container">
+            
+            <!-- Section Header -->
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-label">WHY CHOOSE US</span>
+                <h2 class="section-heading">Crafted With Care, Made To Last</h2>
+                <p class="section-desc">
+                    Every crochet creation is thoughtfully handcrafted using premium materials, ensuring beauty, durability, and a personal touch in every stitch.
+                </p>
+            </div>
+
+            <!-- Features Grid (4 columns) -->
+            <div class="features-grid">
+                
+                <!-- Card 1 -->
+                <div class="feature-card" data-animate="fade-up" data-delay="100">
+                    <div class="feature-icon" aria-hidden="true">🧶</div>
+                    <h3 class="feature-title">Handmade with Love</h3>
+                    <p class="feature-text">Every piece is individually handcrafted with attention to every detail.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="feature-card" data-animate="fade-up" data-delay="200">
+                    <div class="feature-icon" aria-hidden="true">🌿</div>
+                    <h3 class="feature-title">Premium Materials</h3>
+                    <p class="feature-text">Only high-quality yarns are selected for softness, durability and elegance.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="feature-card" data-animate="fade-up" data-delay="300">
+                    <div class="feature-icon" aria-hidden="true">🎁</div>
+                    <h3 class="feature-title">Perfect for Gifting</h3>
+                    <p class="feature-text">Beautiful handmade gifts designed to create unforgettable memories.</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="feature-card" data-animate="fade-up" data-delay="400">
+                    <div class="feature-icon" aria-hidden="true">🚚</div>
+                    <h3 class="feature-title">Safe Delivery</h3>
+                    <p class="feature-text">Carefully packed to ensure every creation reaches you in perfect condition.</p>
+                </div>
+
+            </div><!-- /features-grid -->
+            
+        </div>
+    </section>
+
+    <!-- ================================================================
+         BEST SELLERS SECTION
+    ================================================================ -->
+    <section class="bestsellers-section" aria-label="Best Sellers">
+        <div class="container">
+            
+            <!-- Section Header -->
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-label">BEST SELLERS</span>
+                <h2 class="section-heading">Customer Favorites</h2>
+                <p class="section-desc">
+                    Discover our most loved handmade crochet creations, carefully crafted to bring warmth, beauty, and joy to every occasion.
+                </p>
+            </div>
+
+            <!-- Best Sellers Grid (4 columns) -->
+            <div class="bestsellers-grid">
+                
+                <!-- Product 1 -->
+                <div class="product-card" data-animate="fade-up" data-delay="100">
+                    <div class="product-img-wrap">
+                        <img src="https://picsum.photos/seed/bouquet2/500/600" alt="Blossom Crochet Bouquet" class="product-img" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="product-title">Blossom Crochet Bouquet</h3>
+                        <div class="product-price">$45.00</div>
+                        <a href="/shop/product-1" class="btn btn-product" aria-label="View Blossom Crochet Bouquet">View Product</a>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="product-card" data-animate="fade-up" data-delay="200">
+                    <div class="product-img-wrap">
+                        <img src="https://picsum.photos/seed/sunflower/500/600" alt="Sunflower Charm" class="product-img" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="product-title">Sunflower Charm</h3>
+                        <div class="product-price">$22.00</div>
+                        <a href="/shop/product-2" class="btn btn-product" aria-label="View Sunflower Charm">View Product</a>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="product-card" data-animate="fade-up" data-delay="300">
+                    <div class="product-img-wrap">
+                        <img src="https://picsum.photos/seed/lavender/500/600" alt="Lavender Bloom" class="product-img" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="product-title">Lavender Bloom</h3>
+                        <div class="product-price">$35.00</div>
+                        <a href="/shop/product-3" class="btn btn-product" aria-label="View Lavender Bloom">View Product</a>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="product-card" data-animate="fade-up" data-delay="400">
+                    <div class="product-img-wrap">
+                        <img src="https://picsum.photos/seed/daisy/500/600" alt="Daisy Dreams" class="product-img" loading="lazy">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="product-title">Daisy Dreams</h3>
+                        <div class="product-price">$28.00</div>
+                        <a href="/shop/product-4" class="btn btn-product" aria-label="View Daisy Dreams">View Product</a>
+                    </div>
+                </div>
+
+            </div><!-- /bestsellers-grid -->
+            
+        </div>
+    </section>
+
+    <!-- ================================================================
+         TESTIMONIALS SECTION
+    ================================================================ -->
+    <section class="testimonials-section" aria-label="Testimonials">
+        <div class="container">
+            
+            <!-- Section Header -->
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-label">TESTIMONIALS</span>
+                <h2 class="section-heading">Loved by Our Customers</h2>
+                <p class="section-desc">
+                    Hear from our wonderful community about the joy, warmth, and quality our handcrafted creations bring to their lives.
+                </p>
+            </div>
+
+            <!-- Testimonials Grid (3 columns) -->
+            <div class="testimonials-grid">
+                
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card" data-animate="fade-up" data-delay="100">
+                    <div class="testimonial-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                    <p class="testimonial-text">"Absolutely stunning! The attention to detail on my custom crochet bouquet was incredible. It’s a beautiful keepsake that will last forever."</p>
+                    <div class="testimonial-author">- Sarah Jenkins</div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card" data-animate="fade-up" data-delay="200">
+                    <div class="testimonial-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                    <p class="testimonial-text">"I ordered the sunflower charm for my best friend, and she absolutely loved it! The quality is premium and the packaging was so elegant."</p>
+                    <div class="testimonial-author">- Emily R.</div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card" data-animate="fade-up" data-delay="300">
+                    <div class="testimonial-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                    <p class="testimonial-text">"Loop & Leisure pieces truly feel made with love. The lavender bloom I bought looks perfect on my desk. Highly recommend!"</p>
+                    <div class="testimonial-author">- Jessica M.</div>
+                </div>
+
+            </div><!-- /testimonials-grid -->
+            
+        </div>
+    </section>
+
+    <!-- ================================================================
+         FAQ SECTION
+    ================================================================ -->
+    <section class="faq-section" aria-label="Frequently Asked Questions">
+        <div class="container">
+            
+            <!-- Section Header -->
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-label">FAQ</span>
+                <h2 class="section-heading">Frequently Asked Questions</h2>
+                <p class="section-desc">
+                    Everything you need to know before placing your order.
+                </p>
+            </div>
+
+            <!-- FAQ Accordion -->
+            <div class="faq-accordion" data-animate="fade-up" data-delay="100">
+                
+                <!-- Item 1 -->
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span class="faq-question-text">1. How long does it take to make a crochet order?</span>
+                        <span class="faq-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Most custom orders take 5-7 business days to handcraft with care, depending on the complexity and current order volume.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span class="faq-question-text">2. Do you accept custom bouquet requests?</span>
+                        <span class="faq-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Yes! We love bringing your unique visions to life. You can choose specific flowers, colors, and arrangements for your custom bouquet.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span class="faq-question-text">3. Which materials do you use?</span>
+                        <span class="faq-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            We use premium, high-quality cotton and blended yarns to ensure softness, durability, and a beautiful finish for every piece.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span class="faq-question-text">4. How should I care for my crochet products?</span>
+                        <span class="faq-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            To maintain their shape and vibrant colors, we recommend gentle hand washing in cold water with mild soap, and laying them flat to dry out of direct sunlight.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span class="faq-question-text">5. Do you ship across India?</span>
+                        <span class="faq-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Yes, we provide secure and reliable shipping across all states in India. Delivery times vary by location.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span class="faq-question-text">6. Can I send this as a gift?</span>
+                        <span class="faq-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="faq-answer-inner">
+                            Absolutely! Every item is beautifully packaged, and you can include a personalized handwritten note at checkout.
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- /faq-accordion -->
+
+        </div>
+    </section>
+
+    <!-- ================================================================
+         GALLERY SECTION
+    ================================================================ -->
+    <section class="gallery-section" aria-label="Our Gallery">
+        <div class="container">
+            
+            <!-- Section Header -->
+            <div class="section-header" data-animate="fade-up">
+                <span class="section-label">OUR GALLERY</span>
+                <h2 class="section-heading">Moments Crafted With Love</h2>
+                <p class="section-desc">
+                    A glimpse into our handmade crochet creations and happy moments.
+                </p>
+            </div>
+
+            <!-- Gallery Grid (8 images, 4 per row) -->
+            <div class="gallery-grid">
+                
+                <div class="gallery-item" data-animate="fade-up" data-delay="100">
+                    <img src="https://picsum.photos/seed/gal1/400/400" alt="Gallery image 1" loading="lazy">
+                    <div class="gallery-overlay">
+                        <svg class="instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-animate="fade-up" data-delay="200">
+                    <img src="https://picsum.photos/seed/gal2/400/400" alt="Gallery image 2" loading="lazy">
+                    <div class="gallery-overlay">
+                        <svg class="instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-animate="fade-up" data-delay="300">
+                    <img src="https://picsum.photos/seed/gal3/400/400" alt="Gallery image 3" loading="lazy">
+                    <div class="gallery-overlay">
+                        <svg class="instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-animate="fade-up" data-delay="400">
+                    <img src="https://picsum.photos/seed/gal4/400/400" alt="Gallery image 4" loading="lazy">
+                    <div class="gallery-overlay">
+                        <svg class="instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-animate="fade-up" data-delay="100">
+                    <img src="https://picsum.photos/seed/gal5/400/400" alt="Gallery image 5" loading="lazy">
+                    <div class="gallery-overlay">
+                        <svg class="instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-animate="fade-up" data-delay="200">
+                    <img src="https://picsum.photos/seed/gal6/400/400" alt="Gallery image 6" loading="lazy">
+                    <div class="gallery-overlay">
+                        <svg class="instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-animate="fade-up" data-delay="300">
+                    <img src="https://picsum.photos/seed/gal7/400/400" alt="Gallery image 7" loading="lazy">
+                    <div class="gallery-overlay">
+                        <svg class="instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-animate="fade-up" data-delay="400">
+                    <img src="https://picsum.photos/seed/gal8/400/400" alt="Gallery image 8" loading="lazy">
+                    <div class="gallery-overlay">
+                        <svg class="instagram-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </div>
+                </div>
+
+            </div><!-- /gallery-grid -->
+
+            <!-- Follow Us Action -->
+            <div class="gallery-action" data-animate="fade-up">
+                <a href="https://instagram.com/loopandleisurebymithra" target="_blank" rel="noopener noreferrer" class="gallery-handle">@loopandleisurebymithra</a>
+                <a href="https://instagram.com/loopandleisurebymithra" target="_blank" rel="noopener noreferrer" class="btn btn-product">Follow Us</a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================================================================
+         PREMIUM FOOTER
+    ================================================================ -->
+    <footer class="premium-footer" aria-label="Footer">
+        <div class="container">
+            <div class="footer-grid">
+                
+                <!-- Column 1: Brand -->
+                <div class="footer-col brand-col">
+                    <div class="footer-brand">
+                        <span class="brand-title">Loop & Leisure</span>
+                        <span class="brand-subtitle">by Mithra</span>
+                    </div>
+                    <p class="footer-desc">
+                        Handcrafted crochet creations made with love for every special moment.
+                    </p>
+                </div>
+
+                <!-- Column 2: Quick Links -->
+                <div class="footer-col">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/shop">Shop</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Customer Support -->
+                <div class="footer-col">
+                    <h3 class="footer-heading">Customer Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="/shipping">Shipping Policy</a></li>
+                        <li><a href="/returns">Returns</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Contact -->
+                <div class="footer-col">
+                    <h3 class="footer-heading">Contact</h3>
+                    <ul class="footer-contact">
+                        <li><a href="mailto:hello@loopandleisure.com">hello@loopandleisure.com</a></li>
+                        <li><a href="tel:+910000000000">+91 00000 00000</a></li>
+                        <li>Coimbatore, Tamil Nadu</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Loop & Leisure by Mithra. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/hero.js') }}"></script>
+<script src="{{ url_for('static', filename='js/faq.js') }}"></script>
+{% endblock %}

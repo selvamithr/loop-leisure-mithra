@@ -1,0 +1,159 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}My Orders | Loop & Leisure by Mithra{% endblock %}
+{% block meta_description %}View and track your handcrafted crochet orders.{% endblock %}
+
+{% block content %}
+    {% include 'partials/navbar.html' %}
+
+    <main class="section" style="padding-top: var(--spacing-xl); min-height: 75vh; background-color: var(--color-background);">
+        <div class="container">
+            <div style="margin-bottom: var(--spacing-xl);">
+                <h1 style="font-family: var(--font-family-logo); font-size: var(--text-h1); color: var(--color-primary); margin-bottom: var(--spacing-xs);">My Orders</h1>
+                <p style="color: var(--color-text-muted);">Track your custom crochet creations and payment milestones.</p>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category if category != 'error' else 'danger' }}" style="margin-bottom: var(--spacing-md); padding: var(--spacing-sm); border-radius: var(--radius-sm); background: {% if category == 'success' %}#e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9{% else %}#ffebee; color: #c62828; border: 1px solid #ffcdd2{% endif %};">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if not orders %}
+                <div class="card text-center" style="padding: var(--spacing-xl); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+                    <p style="color: var(--color-text-muted); font-size: var(--text-body); margin-bottom: var(--spacing-md);">You haven't placed any orders yet.</p>
+                    <a href="/shop" class="btn btn-primary" style="display: inline-block;">Browse Collection</a>
+                </div>
+            {% else %}
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-lg);">
+                    {% for order in orders %}
+                        <div class="card" style="padding: var(--spacing-lg); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--color-border); padding-bottom: var(--spacing-sm); margin-bottom: var(--spacing-md); gap: var(--spacing-sm);">
+                                <div>
+                                    <span style="color: var(--color-text-muted); font-size: var(--text-caption); text-transform: uppercase;">Order Number</span>
+                                    <h3 style="font-family: var(--font-family-serif); font-size: var(--text-h3); color: var(--color-primary); margin: 0;">{{ order.order_number }}</h3>
+                                </div>
+                                <div style="text-align: right;">
+                                    <span style="color: var(--color-text-muted); font-size: var(--text-caption);">Placed on</span>
+                                    <div style="font-weight: var(--fw-medium);">{{ order.created_at.strftime('%d %b %Y, %I:%M %p') }}</div>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
+                                <div>
+                                    <span style="color: var(--color-text-muted); font-size: var(--text-caption); display: block; margin-bottom: 4px;">Payment Status</span>
+                                    {% if order.payment_status == 'Pending' %}
+                                        <span style="background: #fff3e0; color: #e65100; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Pending Advance</span>
+                                    {% elif order.payment_status == 'Pending Verification' %}
+                                        <span style="background: #e8f0fe; color: #1a73e8; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Verifying Advance</span>
+                                    {% elif order.payment_status == 'Advance Paid' %}
+                                        <span style="background: #e8f5e9; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Advance Paid (50%)</span>
+                                    {% elif order.payment_status == 'Remaining Pending' %}
+                                        <span style="background: #fff3e0; color: #e65100; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Pending Final (50%)</span>
+                                    {% elif order.payment_status == 'Remaining Pending Verification' %}
+                                        <span style="background: #e8f0fe; color: #1a73e8; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Verifying Final</span>
+                                    {% elif order.payment_status == 'Fully Paid' %}
+                                        <span style="background: #e8f5e9; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Fully Paid</span>
+                                    {% elif order.payment_status == 'Rejected' %}
+                                        <span style="background: #ffebee; color: #c62828; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Payment Rejected</span>
+                                    {% else %}
+                                        <span style="background: #eee; color: #555; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">{{ order.payment_status }}</span>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <span style="color: var(--color-text-muted); font-size: var(--text-caption); display: block; margin-bottom: 4px;">Production Status</span>
+                                    {% if order.production_status == 'Not Started' %}
+                                        <span style="background: #f5f5f5; color: #616161; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Awaiting Payment</span>
+                                    {% elif order.production_status == 'Started' %}
+                                        <span style="background: #e8f0fe; color: #1a73e8; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Crocheting Started</span>
+                                    {% elif order.production_status == 'Completed' %}
+                                        <span style="background: #e8f5e9; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Completed / Ready</span>
+                                    {% else %}
+                                        <span style="background: #eee; color: #555; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">{{ order.production_status }}</span>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <span style="color: var(--color-text-muted); font-size: var(--text-caption); display: block; margin-bottom: 4px;">Order Status</span>
+                                    {% if order.order_status == 'Pending' %}
+                                        <span style="background: #f5f5f5; color: #616161; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Awaiting Verification</span>
+                                    {% elif order.order_status == 'Confirmed' %}
+                                        <span style="background: #e3f2fd; color: #0d47a1; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Confirmed</span>
+                                    {% elif order.order_status == 'Dispatched' %}
+                                        <span style="background: #e0f7fa; color: #006064; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Dispatched</span>
+                                    {% elif order.order_status == 'Delivered' %}
+                                        <span style="background: #e8f5e9; color: #2e7d32; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Delivered</span>
+                                    {% elif order.order_status == 'Cancelled' %}
+                                        <span style="background: #ffebee; color: #c62828; padding: 4px 8px; border-radius: 4px; font-size: var(--text-caption); font-weight: var(--fw-medium);">Cancelled</span>
+                                    {% endif %}
+                                </div>
+
+                                <div>
+                                    <span style="color: var(--color-text-muted); font-size: var(--text-caption); display: block; margin-bottom: 4px;">Total Order Value</span>
+                                    <span style="font-weight: var(--fw-semibold); font-size: 1.1rem; color: var(--color-primary);">&#8377;{{ '%.2f' % order.total_amount }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Payment Rejection Alert -->
+                            {% if order.payment_status == 'Rejected' %}
+                                {% set last_payment = order.payments|selectattr('payment_type', 'equalto', 'Advance')|first %}
+                                {% if not last_payment %}
+                                    {% set last_payment = order.payments|last %}
+                                {% endif %}
+                                {% if last_payment and last_payment.rejection_reason %}
+                                    <div style="background: #fff8f8; border: 1px solid #ffcccc; border-radius: 6px; padding: var(--spacing-sm) var(--spacing-md); margin-bottom: var(--spacing-md); color: #c62828;">
+                                        <strong>Payment Rejected:</strong> {{ last_payment.rejection_reason }}
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+
+                            <!-- Tracking Info -->
+                            {% if order.order_status in ('Dispatched', 'Delivered') and order.tracking_number %}
+                                <div style="background: var(--color-background); border: 1px solid var(--color-border); border-radius: 6px; padding: var(--spacing-sm) var(--spacing-md); margin-bottom: var(--spacing-md);">
+                                    <span style="color: var(--color-text-muted); font-size: var(--text-caption); text-transform: uppercase; font-weight: var(--fw-medium); display: block; margin-bottom: 4px;">Tracking Information</span>
+                                    <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-md); font-size: 0.95rem;">
+                                        <div><strong>Courier:</strong> {{ order.courier_name or 'Standard' }}</div>
+                                        <div><strong>Tracking ID:</strong> <span style="font-family: monospace; font-size: 0.95rem; background: #eee; padding: 2px 6px; border-radius: 3px;">{{ order.tracking_number }}</span></div>
+                                        {% if order.dispatch_date %}
+                                            <div><strong>Shipped on:</strong> {{ order.dispatch_date.strftime('%d %b %Y') }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            <!-- Order items and buttons -->
+                            <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--spacing-md); background: #fafafa; padding: var(--spacing-sm) var(--spacing-md); border-radius: 6px;">
+                                <div style="font-size: 0.9rem; color: var(--color-text);">
+                                    <strong>Items:</strong>
+                                    {% for item in order.items %}
+                                        {{ item.product.name }} (x{{ item.quantity }}){% if not loop.last %}, {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
+                                    <a href="{{ url_for('customer.order_detail', order_number=order.order_number) }}" class="btn btn-secondary btn-sm">Track Order</a>
+                                    {% if order.payment_status in ('Pending', 'Rejected') %}
+                                        <a href="{{ url_for('customer.payment', order_number=order.order_number) }}" class="btn btn-primary btn-sm">Pay Advance (&#8377;{{ '%.2f' % order.advance_amount }})</a>
+                                    {% elif order.payment_status == 'Remaining Pending' %}
+                                        <a href="{{ url_for('customer.payment', order_number=order.order_number) }}" class="btn btn-primary btn-sm" style="background-color: var(--color-accent-gold); border-color: var(--color-accent-gold);">Pay Remaining (&#8377;{{ '%.2f' % order.remaining_amount }})</a>
+                                    {% endif %}
+                                    
+                                    {% if order.order_status == 'Delivered' %}
+                                        <a href="/product?slug=crochet-rose-bouquet#reviews" class="btn btn-secondary btn-sm">Write Review</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+    {% include 'partials/footer.html' ignore missing %}
+{% endblock %}

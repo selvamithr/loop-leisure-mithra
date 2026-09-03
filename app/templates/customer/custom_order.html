@@ -1,0 +1,29 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Custom Order | Loop & Leisure{% endblock %}
+{% block meta_description %}Request a custom crochet creation tailored to your specifications.{% endblock %}
+
+{% block content %}
+  {% include 'partials/navbar.html' %}
+  <main class="page custom-order-page">
+    <section class="container">
+      <h1 class="section-heading">Custom Order Request</h1>
+      <p class="section-desc">Tell us what you envision and we will bring it to life.</p>
+      <form method="post" action="{{ url_for('customer.custom_order') }}" class="custom-order-form">
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" required class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required class="form-control" />
+        </div>
+        <div class="form-group">
+          <label for="details">Order Details</label>
+          <textarea id="details" name="details" rows="5" required class="form-control"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Request</button>
+      </form>
+    </section>
+  </main>
+{% endblock %}

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details - {{ order.order_number }} | Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            color: #334155;
+        }
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .admin-sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            border-right: 1px solid #e2e8f0;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .admin-brand {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .admin-brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            display: block;
+        }
+        .admin-brand-subtitle {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .admin-nav {
+            padding: 1rem 0;
+            flex: 1;
+        }
+        .admin-nav-item {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: #475569;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .admin-nav-item:hover, .admin-nav-item.active {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            border-left: 3px solid var(--color-primary);
+        }
+        .admin-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .admin-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .card-header {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .details-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .details-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        .details-list li:last-child {
+            border-bottom: none;
+        }
+        .details-label {
+            font-weight: 500;
+            color: #64748b;
+        }
+        .details-value {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .items-table th, .items-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .items-table th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+        .payment-screenshot {
+            max-width: 100%;
+            border-radius: 0.25rem;
+            border: 1px solid #e2e8f0;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #334155;
+            font-size: 0.875rem;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.375rem;
+            font-family: 'Inter', sans-serif;
+        }
+        .action-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .btn-small {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .btn-success { background-color: #10b981; color: white; border: none; }
+        .btn-success:hover { background-color: #059669; }
+        .btn-danger { background-color: #ef4444; color: white; border: none; }
+        .btn-danger:hover { background-color: #dc2626; }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-pending { background-color: #fef3c7; color: #92400e; }
+        .badge-info { background-color: #e0f2fe; color: #0369a1; }
+        .badge-success { background-color: #dcfce3; color: #166534; }
+        .badge-danger { background-color: #fee2e2; color: #b91c1c; }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="admin-brand">
+                <span class="admin-brand-title">Loop & Leisure</span>
+                <span class="admin-brand-subtitle">Admin Dashboard</span>
+            </div>
+            <nav class="admin-nav">
+                <a href="{{ url_for('admin.dashboard') }}" class="admin-nav-item">Dashboard</a>
+                <a href="{{ url_for('admin.orders') }}" class="admin-nav-item active">Orders</a>
+                <a href="{{ url_for('admin.admin_products') }}" class="admin-nav-item{% if request.endpoint in ('admin.admin_products', 'admin.product_add', 'admin.product_edit') %} active{% endif %}">Products</a>
+                <a href="{{ url_for('admin.logout') }}" class="admin-nav-item" style="color: #ef4444; margin-top: auto;">Logout</a>
+            </nav>
+        </aside>
+
+        <main class="admin-content">
+            <div class="admin-header">
+                <h1 class="admin-title">Order #{{ order.order_number }}</h1>
+                <a href="{{ url_for('admin.orders') }}" class="btn btn-outline">Back to Orders</a>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div style="margin-bottom: 1.5rem; padding: 1rem; border-radius: 0.375rem; font-size: 0.875rem; background: {% if category == 'success' %}#dcfce3; color: #166534{% else %}#fee2e2; color: #b91c1c{% endif %}; border: 1px solid {% if category == 'success' %}#bbf7d0{% else %}#fecaca{% endif %};">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <div class="grid-container">
+                <!-- Left Column -->
+                <div>
+                    <!-- Order Items -->
+                    <div class="card">
+                        <h2 class="card-header">Order Items</h2>
+                        <table class="items-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Unit Price</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order.items %}
+                                <tr>
+                                    <td>{{ item.product.name }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>${{ "%.2f"|format(item.price) }}</td>
+                                    <td><strong>${{ "%.2f"|format(item.price * item.quantity) }}</strong></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" style="text-align: right; padding-top: 1rem;"><strong>Total:</strong></td>
+                                    <td style="padding-top: 1rem; font-size: 1.25rem;"><strong>${{ "%.2f"|format(order.total_amount) }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <!-- Payments -->
+                    <div class="card">
+                        <h2 class="card-header">Payment History</h2>
+                        {% if order.payments %}
+                            {% for payment in order.payments %}
+                            <div style="border: 1px solid #e2e8f0; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <div>
+                                        <h3 style="margin: 0; font-size: 1rem; color: #0f172a;">{{ payment.payment_type }} Payment</h3>
+                                        <div style="font-size: 0.875rem; color: #64748b;">Amount: ${{ "%.2f"|format(payment.amount) }}</div>
+                                        <div style="font-size: 0.875rem; color: #64748b;">Date: {{ payment.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                                        {% if payment.upi_ref_number %}
+                                        <div style="font-size: 0.875rem; color: #64748b;">UPI Ref: {{ payment.upi_ref_number }}</div>
+                                        {% endif %}
+                                    </div>
+                                    <div>
+                                        {% if payment.status == 'Pending' %}
+                                            <span class="badge badge-pending">Pending Verification</span>
+                                        {% elif payment.status == 'Verified' %}
+                                            <span class="badge badge-success">Verified</span>
+                                        {% elif payment.status == 'Rejected' %}
+                                            <span class="badge badge-danger">Rejected</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                {% if payment.screenshot_filename %}
+                                <div style="margin-bottom: 1rem;">
+                                    <p style="font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Screenshot Proof:</p>
+                                    <a href="{{ url_for('static', filename='uploads/payments/' ~ payment.screenshot_filename) }}" target="_blank">
+                                        <img src="{{ url_for('static', filename='uploads/payments/' ~ payment.screenshot_filename) }}" alt="Payment Screenshot" class="payment-screenshot" style="max-width: 300px;">
+                                    </a>
+                                </div>
+                                {% endif %}
+                                
+                                {% if payment.status == 'Pending' %}
+                                <div style="background-color: #f8fafc; padding: 1rem; border-radius: 0.375rem; border: 1px solid #e2e8f0;">
+                                    <p style="margin-top: 0; font-size: 0.875rem; font-weight: 600;">Verification Action:</p>
+                                    <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                                        <form action="{{ url_for('admin.verify_payment', order_number=order.order_number, payment_id=payment.id) }}" method="POST">
+                                            <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to verify this payment?');">Verify Payment</button>
+                                        </form>
+                                        
+                                        <form action="{{ url_for('admin.reject_payment', order_number=order.order_number, payment_id=payment.id) }}" method="POST" style="flex: 1;">
+                                            <input type="text" name="rejection_reason" class="form-control" placeholder="Reason for rejection (required)" required style="margin-bottom: 0.5rem;">
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to reject this payment?');">Reject Payment</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                {% if payment.status == 'Rejected' and payment.rejection_reason %}
+                                <div style="background-color: #fee2e2; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #fecaca; margin-top: 0.5rem;">
+                                    <p style="margin: 0; font-size: 0.875rem; color: #b91c1c;"><strong>Reason for rejection:</strong> {{ payment.rejection_reason }}</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p style="color: #64748b; font-size: 0.875rem;">No payment records found yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div>
+                    <!-- Order Info -->
+                    <div class="card">
+                        <h2 class="card-header">Order Info</h2>
+                        <ul class="details-list">
+                            <li><span class="details-label">Date:</span> <span class="details-value">{{ order.created_at.strftime('%Y-%m-%d %H:%M') }}</span></li>
+                            <li><span class="details-label">Status:</span> 
+                                <span class="details-value">
+                                    {% if order.order_status == 'Delivered' %}
+                                        <span class="badge badge-success">{{ order.order_status }}</span>
+                                    {% elif order.order_status == 'Dispatched' %}
+                                        <span class="badge badge-info">{{ order.order_status }}</span>
+                                    {% elif order.order_status == 'Confirmed' %}
+                                        <span class="badge badge-success">{{ order.order_status }}</span>
+                                    {% else %}
+                                        <span class="badge badge-pending">{{ order.order_status }}</span>
+                                    {% endif %}
+                                </span>
+                            </li>
+                            <li><span class="details-label">Payment:</span> 
+                                <span class="details-value">
+                                    {% if order.payment_status in ('Advance Paid', 'Fully Paid') %}
+                                        <span class="badge badge-success">{{ order.payment_status }}</span>
+                                    {% elif order.payment_status == 'Rejected' %}
+                                        <span class="badge badge-danger">{{ order.payment_status }}</span>
+                                    {% else %}
+                                        <span class="badge badge-pending">{{ order.payment_status }}</span>
+                                    {% endif %}
+                                </span>
+                            </li>
+                            <li><span class="details-label">Production:</span> 
+                                <span class="details-value">
+                                    {% if order.production_status == 'Completed' %}
+                                        <span class="badge badge-success">{{ order.production_status }}</span>
+                                    {% elif order.production_status == 'Started' %}
+                                        <span class="badge badge-info">{{ order.production_status }}</span>
+                                    {% else %}
+                                        <span class="badge" style="background: #f1f5f9; color: #475569;">{{ order.production_status }}</span>
+                                    {% endif %}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Customer Details -->
+                    <div class="card">
+                        <h2 class="card-header">Customer Details</h2>
+                        <ul class="details-list">
+                            <li><span class="details-label">Name:</span> <span class="details-value">{{ order.customer.full_name }}</span></li>
+                            <li><span class="details-label">Email:</span> <span class="details-value">{{ order.customer.email }}</span></li>
+                            <li><span class="details-label">Phone:</span> <span class="details-value">{{ order.customer.phone }}</span></li>
+                            <li style="flex-direction: column; align-items: flex-start; gap: 0.25rem;">
+                                <span class="details-label">Shipping Address:</span> 
+                                <span class="details-value" style="font-weight: 400; line-height: 1.5;">
+                                    {{ order.shipping_address }}<br>
+                                    {{ order.city }}, {{ order.state }} {{ order.zip_code }}<br>
+                                    {{ order.country }}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Management Actions -->
+                    <div class="card">
+                        <h2 class="card-header">Manage Order</h2>
+                        
+                        <!-- Production Update -->
+                        <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0;">
+                            <h3 style="font-size: 1rem; margin-top: 0;">Production Status</h3>
+                            <form action="{{ url_for('admin.update_production', order_number=order.order_number) }}" method="POST">
+                                <div class="form-group">
+                                    <select name="production_status" class="form-control">
+                                        <option value="Not Started" {% if order.production_status == 'Not Started' %}selected{% endif %}>Not Started</option>
+                                        <option value="Started" {% if order.production_status == 'Started' %}selected{% endif %}>Started (In Production)</option>
+                                        <option value="Completed" {% if order.production_status == 'Completed' %}selected{% endif %}>Completed</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-small">Update Status</button>
+                            </form>
+                        </div>
+                        
+                        <!-- Request Remaining Payment -->
+                        {% if order.production_status == 'Completed' and order.payment_status == 'Advance Paid' %}
+                        <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0;">
+                            <h3 style="font-size: 1rem; margin-top: 0;">Final Payment</h3>
+                            <p style="font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">Production is complete. Request final payment from customer to proceed with dispatch.</p>
+                            <form action="{{ url_for('admin.request_remaining', order_number=order.order_number) }}" method="POST">
+                                <button type="submit" class="btn" style="background-color: #f59e0b; color: white;">Request Final Payment</button>
+                            </form>
+                        </div>
+                        {% endif %}
+
+                        <!-- Dispatch Options -->
+                        {% if order.payment_status == 'Fully Paid' and order.order_status == 'Confirmed' and order.production_status == 'Completed' %}
+                        <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0;">
+                            <h3 style="font-size: 1rem; margin-top: 0; color: #0284c7;">Dispatch Order</h3>
+                            <form action="{{ url_for('admin.dispatch_order', order_number=order.order_number) }}" method="POST">
+                                <div class="form-group">
+                                    <label>Courier Name</label>
+                                    <input type="text" name="courier_name" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Tracking Number</label>
+                                    <input type="text" name="tracking_number" class="form-control" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary" style="width: 100%;">Mark as Dispatched</button>
+                            </form>
+                        </div>
+                        {% endif %}
+
+                        <!-- Delivery Status -->
+                        {% if order.order_status == 'Dispatched' %}
+                        <div style="margin-bottom: 1.5rem;">
+                            <h3 style="font-size: 1rem; margin-top: 0; color: #16a34a;">Mark Delivered</h3>
+                            <div style="background-color: #f8fafc; padding: 1rem; border-radius: 0.375rem; border: 1px solid #e2e8f0; font-size: 0.875rem; margin-bottom: 1rem;">
+                                <p style="margin-top: 0;"><strong>Courier:</strong> {{ order.courier_name }}</p>
+                                <p style="margin-bottom: 0;"><strong>Tracking:</strong> {{ order.tracking_number }}</p>
+                            </div>
+                            <form action="{{ url_for('admin.deliver_order', order_number=order.order_number) }}" method="POST">
+                                <button type="submit" class="btn btn-success" style="width: 100%;" onclick="return confirm('Are you sure the order has been delivered to the customer?');">Mark as Delivered</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                        
+                        {% if order.order_status == 'Delivered' %}
+                        <div style="text-align: center; color: #16a34a; font-weight: 500; padding: 1rem; background: #dcfce3; border-radius: 0.5rem;">
+                            Order has been successfully delivered.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

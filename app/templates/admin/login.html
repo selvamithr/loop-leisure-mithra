@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Loop & Leisure by Mithra</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-background);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-card {
+            background-color: #ffffff;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            padding: var(--spacing-xl);
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+        .login-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: var(--text-h2);
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-xs);
+            font-weight: 700;
+        }
+        .login-subtitle {
+            color: var(--color-text-muted);
+            font-size: var(--text-caption);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <h1 class="login-title">Loop & Leisure</h1>
+            <span class="login-subtitle">Administrator Portal</span>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div style="margin-bottom: var(--spacing-md); padding: var(--spacing-sm); border-radius: var(--radius-sm); font-size: var(--text-caption); background: {% if category == 'success' %}#e8f5e9; color: #2e7d32{% else %}#ffebee; color: #c62828{% endif %}; border: 1px solid {% if category == 'success' %}#c8e6c9{% else %}#ffcdd2{% endif %};">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('admin.login') }}">
+            <div class="form-group" style="margin-bottom: var(--spacing-md);">
+                <label for="email" class="form-label">Admin Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="admin@loopandleisure.com" required>
+            </div>
+            <div class="form-group" style="margin-bottom: var(--spacing-lg);">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Log In</button>
+        </form>
+    </div>
+</body>
+</html>

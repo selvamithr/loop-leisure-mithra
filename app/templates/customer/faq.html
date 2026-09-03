@@ -1,0 +1,27 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}FAQ | Loop & Leisure{% endblock %}
+{% block meta_description %}Frequently asked questions about Loop & Leisure, ordering, shipping, and custom orders.{% endblock %}
+
+{% block content %}
+  {% include 'partials/navbar.html' %}
+  <main class="page faq-page">
+    <section class="container">
+      <h1 class="section-heading">Frequently Asked Questions</h1>
+      <div class="faq-list">
+        <details>
+          <summary>How can I place a custom order?</summary>
+          <p>Visit the <a href="/custom-order">Custom Order</a> page to provide your specifications.</p>
+        </details>
+        <details>
+          <summary>What payment methods do you accept?</summary>
+          <p>We accept Google Pay, UPI, and standard credit/debit cards.</p>
+        </details>
+        <details>
+          <summary>How long does shipping take?</summary>
+          <p>Standard shipping takes 3-5 business days after order confirmation.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+{% endblock %}

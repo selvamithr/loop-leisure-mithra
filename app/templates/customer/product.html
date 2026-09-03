@@ -1,0 +1,293 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}{{ product.name }} | Loop & Leisure by Mithra{% endblock %}
+{% block meta_description %}{{ product.description or ('Premium handcrafted ' + product.name + '. Made with love and attention to detail.') }}{% endblock %}
+
+{% block content %}
+    <!-- ── Navigation Bar ── -->
+    {% include 'partials/navbar.html' %}
+
+    <main class="product-page">
+        <!-- ── Product Details Section ── -->
+        <section class="product-detail-section section">
+            <div class="container">
+
+                <!-- Back to Shop -->
+                <div style="margin-bottom: var(--spacing-md);">
+                    <a href="/shop" style="display:inline-flex; align-items:center; gap:6px; font-size:var(--text-caption); color:var(--color-text-muted); text-decoration:none; font-family:var(--font-family-body); letter-spacing:0.04em; transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary)'" onmouseout="this.style.color='var(--color-text-muted)'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                        Back to Shop
+                    </a>
+                </div>
+
+                <div class="product-detail-grid">
+
+                    <!-- LEFT: Image Gallery -->
+                    <div class="product-gallery">
+                        <div class="main-image-wrap">
+                            {% if product.images %}
+                                <img src="{{ product.images[0].image_path }}" alt="{{ product.name }}" id="mainProductImage" class="main-image">
+                            {% else %}
+                                <img src="https://picsum.photos/seed/{{ product.slug }}/800/1000" alt="{{ product.name }}" id="mainProductImage" class="main-image">
+                            {% endif %}
+                        </div>
+                        {% if product.images and product.images|length > 1 %}
+                        <div class="thumbnail-list">
+                            {% for img in product.images %}
+                            <button class="thumbnail-btn {{ 'active' if loop.first else '' }}" data-img="{{ img.image_path }}" aria-label="View image {{ loop.index }}">
+                                <img src="{{ img.image_path }}" alt="Thumbnail {{ loop.index }}">
+                            </button>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- RIGHT: Product Info -->
+                    <div class="product-info-panel">
+                        <div class="product-meta">
+                            <span class="product-category">{{ product.category }}</span>
+                            <div class="product-stock {{ 'status-in-stock' if product.stock_status in ['in_stock', 'available'] else 'status-out-of-stock' }}">
+                                <span class="stock-dot"></span>
+                                {{ 'In Stock' if product.stock_status in ['in_stock', 'available'] else 'Out of Stock' }}
+                            </div>
+                        </div>
+
+                        <h1 class="product-title">{{ product.name }}</h1>
+
+                        <div class="product-reviews-summary">
+                            <div class="stars" aria-label="5 out of 5 stars">★★★★★</div>
+                            <a href="#reviews" class="review-count">({{ db_reviews|length }} Review{{ 's' if db_reviews|length != 1 else '' }})</a>
+                        </div>
+
+                        <div class="product-price">₹{{ "%.0f"|format(product.price) }}</div>
+
+                        {% if product.description %}
+                        <p class="product-description">{{ product.description }}</p>
+                        {% else %}
+                        <p class="product-description">A beautifully handcrafted creation by Mithra, made with premium materials and lots of love. Every piece is made to order, ensuring it arrives fresh and perfect for you.</p>
+                        {% endif %}
+
+                        <!-- Actions -->
+                        <div class="product-actions">
+                            <div class="quantity-selector">
+                                <button type="button" class="qty-btn qty-minus" aria-label="Decrease quantity">−</button>
+                                <input type="number" class="qty-input" id="productQtyInput" value="1" min="1" max="10" aria-label="Quantity">
+                                <button type="button" class="qty-btn qty-plus" aria-label="Increase quantity">+</button>
+                            </div>
+
+                            <div class="action-buttons">
+                                <button
+                                    class="btn btn-primary add-to-cart-btn"
+                                    id="addToCartBtn"
+                                    data-slug="{{ product.slug }}"
+                                    onclick="handleAddToCart(this)">
+                                    Add to Cart
+                                </button>
+                                <a href="/custom-order" class="btn btn-secondary">Customise</a>
+                                <button class="wishlist-btn" aria-label="Add to Wishlist">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heart-icon"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Accordions -->
+                        <div class="product-accordions">
+                            <div class="accordion-item">
+                                <button class="accordion-header" aria-expanded="true">
+                                    Product Information <span class="accordion-icon">−</span>
+                                </button>
+                                <div class="accordion-body open">
+                                    <div class="accordion-content">
+                                        Category: {{ product.category }}<br>
+                                        Handmade to order. Please allow 3–7 days for crafting.<br>
+                                        Every piece is individually handcrafted with care.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <button class="accordion-header" aria-expanded="false">
+                                    Materials Used <span class="accordion-icon">+</span>
+                                </button>
+                                <div class="accordion-body">
+                                    <div class="accordion-content">
+                                        Crafted using 100% premium cotton yarn and eco-friendly materials.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <button class="accordion-header" aria-expanded="false">
+                                    Care Instructions <span class="accordion-icon">+</span>
+                                </button>
+                                <div class="accordion-body">
+                                    <div class="accordion-content">
+                                        Keep away from direct sunlight. Gently hand wash if needed. Do not machine wash.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Reviews Section ── -->
+        <section id="reviews" class="product-reviews-section section">
+            <div class="container">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div style="margin-bottom:var(--spacing-md);padding:var(--spacing-sm);border-radius:var(--radius-sm);background:{% if category == 'success' %}#e8f5e9;color:#2e7d32;border:1px solid #c8e6c9{% else %}#ffebee;color:#c62828;border:1px solid #ffcdd2{% endif %};">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <div class="section-header text-left">
+                    <h2 class="section-heading">Customer Reviews</h2>
+                    <p class="section-desc">See what our customers are saying about this creation.</p>
+                </div>
+
+                <div class="reviews-list">
+                    {% if db_reviews %}
+                        {% for review in db_reviews %}
+                            <div class="review-card">
+                                <div class="review-header">
+                                    <div class="review-user">
+                                        <div class="review-avatar">{{ review.customer.full_name[0] | upper }}</div>
+                                        <div class="review-meta">
+                                            <div class="review-name">{{ review.customer.full_name }}</div>
+                                            <div class="review-date">{{ review.created_at.strftime('%d %b %Y') }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="stars">
+                                        {% for i in range(review.rating) %}★{% endfor %}{% for i in range(5 - review.rating) %}☆{% endfor %}
+                                    </div>
+                                </div>
+                                <p class="review-text">{{ review.comment }}</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-user">
+                                    <div class="review-avatar">S</div>
+                                    <div class="review-meta">
+                                        <div class="review-name">Sarah Jenkins</div>
+                                        <div class="review-date">July 1, 2026</div>
+                                    </div>
+                                </div>
+                                <div class="stars">★★★★★</div>
+                            </div>
+                            <p class="review-text">Absolutely stunning! The attention to detail was incredible. A beautiful keepsake that will last forever. Highly recommend Mithra's work!</p>
+                        </div>
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="review-user">
+                                    <div class="review-avatar">E</div>
+                                    <div class="review-meta">
+                                        <div class="review-name">Emily R.</div>
+                                        <div class="review-date">June 28, 2026</div>
+                                    </div>
+                                </div>
+                                <div class="stars">★★★★★</div>
+                            </div>
+                            <p class="review-text">Bought this as a gift and she loved it. The packaging was so elegant and everything looked remarkably beautiful.</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                {% if can_review %}
+                    <div class="card" style="margin-top:var(--spacing-xl);padding:var(--spacing-lg);border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;">
+                        <h3 style="font-family:var(--font-family-serif);font-size:var(--text-h3);color:var(--color-primary);margin-bottom:var(--spacing-sm);">Share Your Feedback</h3>
+                        <p style="color:var(--color-text-muted);font-size:var(--text-caption);margin-bottom:var(--spacing-md);">You purchased this product and received it. Let us know how you liked it!</p>
+                        <form method="POST" action="{{ url_for('customer.submit_review', slug=product.slug) }}">
+                            <div class="form-group" style="margin-bottom:var(--spacing-md);">
+                                <label for="rating" class="form-label" style="display:block;margin-bottom:4px;">Rating</label>
+                                <select id="rating" name="rating" class="form-control" required style="width:100%;max-width:200px;">
+                                    <option value="5">5 Stars (Excellent)</option>
+                                    <option value="4">4 Stars (Good)</option>
+                                    <option value="3">3 Stars (Average)</option>
+                                    <option value="2">2 Stars (Poor)</option>
+                                    <option value="1">1 Star (Very Poor)</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom:var(--spacing-md);">
+                                <label for="comment" class="form-label" style="display:block;margin-bottom:4px;">Comment</label>
+                                <textarea id="comment" name="comment" class="form-control" rows="4" required placeholder="Write your review here..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <!-- ================================================================
+         PREMIUM FOOTER
+    ================================================================ -->
+    <footer class="premium-footer" aria-label="Footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col brand-col">
+                    <div class="footer-brand">
+                        <span class="brand-title">Loop & Leisure</span>
+                        <span class="brand-subtitle">by Mithra</span>
+                    </div>
+                    <p class="footer-desc">Handcrafted crochet creations made with love for every special moment.</p>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/shop">Shop</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-heading">Customer Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="/shipping">Shipping Policy</a></li>
+                        <li><a href="/returns">Returns</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms &amp; Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-heading">Contact</h3>
+                    <ul class="footer-contact">
+                        <li><a href="mailto:hello@loopandleisure.com">hello@loopandleisure.com</a></li>
+                        <li><a href="tel:+910000000000">+91 00000 00000</a></li>
+                        <li>Coimbatore, Tamil Nadu</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Loop &amp; Leisure by Mithra. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/product.js') }}"></script>
+<script>
+/* Product-page add-to-cart using the slug from the data attribute */
+function handleAddToCart(btn) {
+    const slug = btn.getAttribute('data-slug');
+    const qty = parseInt(document.getElementById('productQtyInput').value) || 1;
+    btn.disabled = true;
+    btn.textContent = 'Adding…';
+    addToCart(slug, qty);
+    setTimeout(() => {
+        btn.disabled = false;
+        btn.textContent = 'Add to Cart';
+    }, 1500);
+}
+</script>
+{% endblock %}

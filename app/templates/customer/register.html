@@ -1,0 +1,64 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Create Account | Loop & Leisure by Mithra{% endblock %}
+{% block meta_description %}Join Loop & Leisure to track orders and save your favorites.{% endblock %}
+
+{% block content %}
+    {% include 'partials/navbar.html' %}
+
+    <main class="auth-page section">
+        <div class="container flex-center">
+            <div class="card auth-card" style="max-width: 500px; width: 100%;">
+                
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    <div class="flash-messages">
+                      {% for category, message in messages %}
+                        <div class="badge badge-{{ category }} auth-flash">{{ message }}</div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% endwith %}
+
+                <div class="auth-header text-center">
+                    <h1 class="auth-title" style="font-family: var(--font-family-logo); font-size: var(--text-h2); color: var(--color-primary); margin-bottom: var(--spacing-sm);">Create Account</h1>
+                    <p class="auth-subtitle" style="color: var(--color-text-muted);">Join the Loop & Leisure family.</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('customer.register') }}" class="auth-form" style="margin-top: var(--spacing-xl);">
+                    <div class="form-group" style="margin-bottom: var(--spacing-md);">
+                        <label for="full_name" class="form-label">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" class="form-control" placeholder="Jane Doe" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: var(--spacing-md);">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="hello@example.com" required>
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: var(--spacing-md);">
+                        <label for="phone" class="form-label">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" class="form-control" placeholder="+91 00000 00000" required>
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: var(--spacing-md);">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="At least 6 characters" minlength="6" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: var(--spacing-xl);">
+                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" placeholder="Repeat your password" minlength="6" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Create Account</button>
+                </form>
+
+                <div class="auth-footer text-center" style="margin-top: var(--spacing-xl); font-size: var(--text-caption); color: var(--color-text-muted);">
+                    Already have an account? <a href="{{ url_for('customer.login') }}" style="color: var(--color-accent-gold); font-weight: var(--fw-medium); text-decoration: none;">Log in</a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

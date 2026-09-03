@@ -1,0 +1,4 @@
+# Production-level Python dependencies for Loop & Leisure by Mithra
+Flask>=2.0.0
+Flask-SQLAlchemy>=2.5.1
+python-dotenv>=0.19.0

@@ -1,0 +1,237 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Order {{ order.order_number }} | Loop & Leisure by Mithra{% endblock %}
+{% block meta_description %}Track the progress of your handcrafted crochet order from Loop & Leisure.{% endblock %}
+
+{% block content %}
+{% include 'partials/navbar.html' %}
+
+<main class="section od-page">
+    <div class="container">
+
+        <!-- ── Back link ── -->
+        <a href="/my-orders" class="od-back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+            Back to My Orders
+        </a>
+
+        <!-- ── Page header ── -->
+        <div class="od-header">
+            <div>
+                <p class="od-order-label">Order Number</p>
+                <h1 class="od-order-number">{{ order.order_number }}</h1>
+            </div>
+            <div class="od-header-meta">
+                <p class="od-order-label">Placed on</p>
+                <p class="od-meta-value">{{ order.created_at.strftime('%d %b %Y') }}</p>
+            </div>
+        </div>
+
+        <div class="od-layout">
+
+            <!-- ════════════════════════════════════════
+                 LEFT COLUMN — Tracking Timeline
+            ════════════════════════════════════════ -->
+            <div class="od-col-track">
+                <div class="od-card od-track-card">
+                    <h2 class="od-card-title">Order Progress</h2>
+
+                    {% if order.order_status == 'Cancelled' %}
+                        <div class="od-cancelled-notice">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                            This order has been cancelled.
+                        </div>
+                    {% else %}
+                        <ol class="od-stepper" aria-label="Order progress steps">
+                            {% for step in tracking_stages %}
+                                {% set idx = loop.index0 %}
+                                {% if idx < current_stage %}
+                                    {% set step_state = 'done' %}
+                                {% elif idx == current_stage %}
+                                    {% set step_state = 'active' %}
+                                {% else %}
+                                    {% set step_state = 'upcoming' %}
+                                {% endif %}
+
+                                <li class="od-step od-step--{{ step_state }}" aria-current="{{ 'step' if step_state == 'active' else 'false' }}">
+                                    <!-- connector line (shown between steps) -->
+                                    {% if not loop.last %}
+                                        <div class="od-step-connector od-step-connector--{{ 'done' if idx < current_stage else 'upcoming' }}"></div>
+                                    {% endif %}
+
+                                    <!-- circle icon -->
+                                    <div class="od-step-icon" aria-hidden="true">
+                                        {% if step_state == 'done' %}
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                        {% elif step_state == 'active' %}
+                                            <div class="od-step-pulse"></div>
+                                        {% else %}
+                                            <div class="od-step-dot"></div>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- label + description -->
+                                    <div class="od-step-body">
+                                        <span class="od-step-label">{{ step.label }}</span>
+                                        <span class="od-step-desc">{{ step.desc }}</span>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    {% endif %}
+
+                    <!-- Courier info block (shown when dispatched/delivered) -->
+                    {% if order.order_status in ('Dispatched', 'Delivered') and order.tracking_number %}
+                        <div class="od-courier-block">
+                            <p class="od-courier-label">Courier &amp; Tracking</p>
+                            <p class="od-courier-value">{{ order.courier_name or 'Standard Courier' }}</p>
+                            <p class="od-courier-tracking">{{ order.tracking_number }}</p>
+                            {% if order.dispatch_date %}
+                                <p class="od-courier-date">Shipped {{ order.dispatch_date.strftime('%d %b %Y') }}</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- ════════════════════════════════════════
+                 RIGHT COLUMN — Order Details
+            ════════════════════════════════════════ -->
+            <div class="od-col-info">
+
+                <!-- Order Items -->
+                <div class="od-card">
+                    <h2 class="od-card-title">Items Ordered</h2>
+                    <ul class="od-items-list">
+                        {% for item in order.items %}
+                            <li class="od-item-row">
+                                <div class="od-item-info">
+                                    <span class="od-item-name">{{ item.product.name }}</span>
+                                    <span class="od-item-qty">× {{ item.quantity }}</span>
+                                </div>
+                                <span class="od-item-price">&#8377;{{ '%.2f' % (item.price * item.quantity) }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="od-totals">
+                        <div class="od-total-row">
+                            <span>Subtotal</span>
+                            <span>&#8377;{{ '%.2f' % order.subtotal }}</span>
+                        </div>
+                        {% if order.shipping_charge %}
+                            <div class="od-total-row">
+                                <span>Shipping</span>
+                                <span>&#8377;{{ '%.2f' % order.shipping_charge }}</span>
+                            </div>
+                        {% endif %}
+                        <div class="od-total-row od-total-row--grand">
+                            <span>Total</span>
+                            <span>&#8377;{{ '%.2f' % order.total_amount }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Summary -->
+                <div class="od-card">
+                    <h2 class="od-card-title">Payment Summary</h2>
+                    <div class="od-payment-grid">
+                        <div class="od-payment-pill-row">
+                            <span class="od-payment-pill-label">Payment Status</span>
+                            {% if order.payment_status == 'Pending' %}
+                                <span class="od-pill od-pill--warn">Advance Pending</span>
+                            {% elif order.payment_status == 'Advance Paid' %}
+                                <span class="od-pill od-pill--ok">Advance Paid</span>
+                            {% elif order.payment_status == 'Fully Paid' %}
+                                <span class="od-pill od-pill--ok">Fully Paid</span>
+                            {% elif order.payment_status == 'Rejected' %}
+                                <span class="od-pill od-pill--err">Rejected</span>
+                            {% else %}
+                                <span class="od-pill od-pill--muted">{{ order.payment_status }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="od-payment-row">
+                            <span>Order Total</span>
+                            <span>&#8377;{{ '%.2f' % order.total_amount }}</span>
+                        </div>
+                        <div class="od-payment-row">
+                            <span>Advance Paid</span>
+                            <span>&#8377;{{ '%.2f' % (0.00 if order.payment_status in ('Pending', 'Rejected') else order.advance_amount) }}</span>
+                        </div>
+                        <div class="od-payment-row" style="font-weight: 600; color: {% if order.payment_status == 'Fully Paid' %}#16a34a{% else %}#0f172a{% endif %}; border-top: 1px solid #e2e8f0; padding-top: 0.5rem; margin-top: 0.5rem;">
+                            <span>Balance Due</span>
+                            <span>&#8377;{{ '%.2f' % (0.00 if order.payment_status == 'Fully Paid' else order.remaining_amount) }}</span>
+                        </div>
+                    </div>
+                    
+                    {% if order.payment_status == 'Advance Paid' or order.payment_status == 'Remaining Pending' or order.payment_status == 'Remaining Pending Verification' %}
+                        <div style="margin-top: 1.5rem; text-align: center; background-color: #f8fafc; padding: 1.25rem; border-radius: 6px; border: 1px solid #e2e8f0;">
+                            {% if order.payment_status == 'Remaining Pending Verification' %}
+                                <p style="color: #64748b; font-size: 0.95rem; margin: 0;">Balance payment proof submitted. Awaiting verification.</p>
+                            {% elif order.payment_status == 'Remaining Pending' %}
+                                <p style="color: #d97706; font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">Balance Payment Due</p>
+                                <a href="{{ url_for('customer.payment', order_number=order.order_number) }}" class="btn btn-primary" style="display: inline-block;">Pay Balance</a>
+                            {% else %}
+                                <p style="color: #64748b; font-size: 0.95rem; margin: 0;">Balance payment will be collected before/at dispatch.</p>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                    <!-- Payment rejection notice -->
+                    {% if order.payment_status == 'Rejected' %}
+                        {% set rej_pay = order.payments | selectattr('status', 'equalto', 'Rejected') | first %}
+                        {% if rej_pay and rej_pay.rejection_reason %}
+                            <div class="od-rejection-notice">
+                                <strong>Reason:</strong> {{ rej_pay.rejection_reason }}
+                            </div>
+                        {% endif %}
+                    {% endif %}
+
+                    <!-- Payment CTA -->
+                    <div class="od-payment-cta">
+                        {% if order.payment_status in ('Pending', 'Rejected') %}
+                            <a href="{{ url_for('customer.payment', order_number=order.order_number) }}" class="btn btn-primary od-pay-btn">
+                                Pay Advance — &#8377;{{ '%.2f' % order.advance_amount }}
+                            </a>
+                        {% elif order.payment_status == 'Remaining Pending' %}
+                            <a href="{{ url_for('customer.payment', order_number=order.order_number) }}" class="btn btn-primary od-pay-btn" style="background-color: var(--color-accent-gold);">
+                                Pay Remaining — &#8377;{{ '%.2f' % order.remaining_amount }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Delivery Address -->
+                {% if order.address %}
+                    <div class="od-card">
+                        <h2 class="od-card-title">Delivery Address</h2>
+                        <address class="od-address">
+                            <strong>{{ order.address.full_name }}</strong><br>
+                            {{ order.address.address_line1 }}<br>
+                            {% if order.address.address_line2 %}{{ order.address.address_line2 }}<br>{% endif %}
+                            {{ order.address.city }}, {{ order.address.state }} – {{ order.address.pincode }}<br>
+                            {% if order.address.phone %}{{ order.address.phone }}{% endif %}
+                        </address>
+                    </div>
+                {% endif %}
+
+                <!-- Review CTA (only after delivered) -->
+                {% if order.order_status == 'Delivered' %}
+                    <div class="od-card od-review-card">
+                        <p class="od-review-prompt">Loved your order? Share your experience.</p>
+                        {% for item in order.items %}
+                            <a href="/product/{{ item.product.slug }}#reviews" class="btn btn-secondary od-review-btn">
+                                Review: {{ item.product.name }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            </div>
+        </div><!-- /.od-layout -->
+
+    </div><!-- /.container -->
+</main>
+
+{% include 'partials/footer.html' ignore missing %}
+{% endblock %}

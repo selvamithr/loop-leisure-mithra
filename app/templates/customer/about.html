@@ -1,0 +1,174 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Our Story | Loop & Leisure by Mithra{% endblock %}
+{% block meta_description %}Learn about Mithra, the founder of Loop & Leisure, and the heartfelt story behind every handcrafted crochet creation — bouquets, keychains, pouches and more.{% endblock %}
+
+{% block content %}
+{% include 'partials/navbar.html' %}
+
+<main class="about-page">
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 1 — FOUNDER HERO
+    ══════════════════════════════════════════════════ -->
+    <section class="about-founder-section">
+        <div class="container">
+            <div class="about-founder-grid">
+
+                <!-- Image Side -->
+                <div class="about-founder-img-col">
+                    <div class="about-founder-img-wrap">
+                        <img
+                            src="{{ url_for('static', filename='images/mithra.jpeg') }}"
+                            alt="Mithra, Founder of Loop & Leisure"
+                            class="about-founder-img"
+                            loading="eager">
+                        <!-- Decorative corner accent -->
+                        <div class="about-img-accent"></div>
+                    </div>
+                </div>
+
+                <!-- Story Side -->
+                <div class="about-founder-text-col">
+                    <span class="section-label">The Story Behind Loop &amp; Leisure</span>
+                    <h1 class="section-heading about-founder-heading">Meet Mithra,<br>Our Founder</h1>
+
+                    <div class="about-story-body">
+                        <p>I always wanted to gift the people who mean the world to me something that felt truly personal — something more than something picked from a shelf. I wanted to give them something where I could put a little piece of my soul into what I was making, something that would make them feel special.</p>
+
+                        <p>That was when crochet caught my eye. I was fascinated by the idea that a simple strand of yarn could slowly turn into almost anything I imagined. The more I learned, the more I wanted to create. I started making different little things as gifts for the people I loved, and every piece became more than just a craft — it became a way of expressing feelings that were sometimes difficult to put into words.</p>
+
+                        <p>Somewhere along the way, those little gifts became something more. While I was in college, I started taking small crochet orders and used the money I earned as my pocket money. What began as something I did simply because I loved creating slowly turned into a little business of my own. And honestly, every order felt like a small win — not because I had simply sold something, but because someone had chosen something I had made with my own hands.</p>
+
+                        <p>I knew that every stitch had taken time, patience and care, and that the piece I was making would eventually become part of someone else's story. Even today, whether I'm making a bouquet, a keychain, a teddy bear, a laptop sleeve, or something completely custom, I still begin exactly the same way — with the hope that when someone holds it, they won't just see handmade crochet. They'll feel the love, care and soul that went into creating it.</p>
+                    </div>
+
+                    <div class="about-founder-ctas">
+                        <a href="/shop" class="btn btn-primary">Explore the Collection</a>
+                        <a href="/custom-order" class="btn btn-secondary">Request a Custom Piece</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 2 — EDITORIAL VALUES TRIO
+    ══════════════════════════════════════════════════ -->
+    <section class="about-values-section section">
+        <div class="container">
+
+            <div class="about-values-grid">
+
+                <!-- Value 1 -->
+                <div class="about-value-card">
+                    <div class="about-value-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                    </div>
+                    <h3 class="about-value-title">Made With Intention</h3>
+                    <p class="about-value-desc">Every piece at Loop &amp; Leisure begins with a feeling, not a factory. Each stitch is placed with patience and care. There is no rushing, no cutting corners — only the quiet, deliberate work of someone who genuinely loves what she makes.</p>
+                </div>
+
+                <!-- Value 2 -->
+                <div class="about-value-card">
+                    <div class="about-value-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <h3 class="about-value-title">More Than Handmade</h3>
+                    <p class="about-value-desc">Loop &amp; Leisure exists because mass-produced products can't carry the feeling that a handmade gift can. These aren't just items to buy — they are small expressions of love, crafted specifically to be given to people who matter. Every creation is designed to become a memory.</p>
+                </div>
+
+                <!-- Value 3 -->
+                <div class="about-value-card">
+                    <div class="about-value-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <h3 class="about-value-title">Made For Your People</h3>
+                    <p class="about-value-desc">The best gifts are the ones that make someone feel truly seen. Everything here is made for people who care enough to give something thoughtful — a birthday bouquet, a custom keychain, a little something that says "I made this thinking of you."</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 3 — PULL QUOTE
+    ══════════════════════════════════════════════════ -->
+    <section class="about-quote-section">
+        <div class="container">
+            <blockquote class="about-pullquote">
+                <span class="about-pullquote-mark">"</span>
+                When someone holds something I've made, I hope they don't just see handmade crochet — I hope they feel the love, care and soul that went into creating it.
+                <span class="about-pullquote-attribution">— Mithra, Founder</span>
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 4 — CUSTOM ORDER CTA
+    ══════════════════════════════════════════════════ -->
+    <section class="about-cta-section section">
+        <div class="container">
+            <div class="about-cta-card">
+                <div class="about-cta-yarn-icon">
+                    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 6.35 17.5"/><path d="M2.74 7.68A10 10 0 0 1 16.1 20.56"/><path d="M2 12a10 10 0 0 0 12.9 9.56"/><path d="M12 2a10 10 0 0 0-9.26 6.18"/></svg>
+                </div>
+                <span class="section-label">Something Unique In Mind?</span>
+                <h2 class="about-cta-heading">Have Something Special in Mind?</h2>
+                <p class="about-cta-desc">Not every idea fits neatly into a shop listing — and that's perfectly fine. If you have something special in mind, a specific colour, a personalised design, a gift for someone very particular, reach out and let's create it together. Custom orders are what Loop &amp; Leisure does best.</p>
+                <a href="/custom-order" class="btn btn-primary about-cta-btn">Request a Custom Creation</a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- ════════════════════════════════════════════════════════
+     PREMIUM FOOTER
+════════════════════════════════════════════════════════ -->
+<footer class="premium-footer" aria-label="Footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col brand-col">
+                <div class="footer-brand">
+                    <span class="brand-title">Loop &amp; Leisure</span>
+                    <span class="brand-subtitle">by Mithra</span>
+                </div>
+                <p class="footer-desc">Handcrafted crochet creations made with love for every special moment.</p>
+            </div>
+            <div class="footer-col">
+                <h3 class="footer-heading">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/shop">Shop</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/faq">FAQ</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3 class="footer-heading">Customer Support</h3>
+                <ul class="footer-links">
+                    <li><a href="/shipping">Shipping Policy</a></li>
+                    <li><a href="/returns">Returns</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="/terms">Terms &amp; Conditions</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3 class="footer-heading">Contact</h3>
+                <ul class="footer-contact">
+                    <li><a href="mailto:hello@loopandleisure.com">hello@loopandleisure.com</a></li>
+                    <li><a href="tel:+910000000000">+91 00000 00000</a></li>
+                    <li>Coimbatore, Tamil Nadu</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Loop &amp; Leisure by Mithra. All Rights Reserved.</p>
+        </div>
+    </div>
+</footer>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+<!--
+========================================================================
+Loop & Leisure by Mithra - Master Layout Template
+========================================================================
+Description: Structural HTML5 shell for all client and administrator views.
+Contains head declarations, SEO meta values, links to global stylesheets,
+and block configurations for child pages.
+========================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 1. Document Configuration Metas -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- 2. Dynamic SEO Parameters -->
+    <title>{% block title %}Loop & Leisure by Mithra{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}Premium, hand-crafted crochet bouquets, flowers, and customized gifts.{% endblock %}">
+    
+    <!-- Open Graph Protocol settings for social sharing integrations -->
+    <meta property="og:title" content="{% block og_title %}Loop & Leisure by Mithra{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Premium, hand-crafted crochet bouquets, flowers, and customized gifts.{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='images/og-share.png') }}{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{{ request.url }}{% endblock %}">
+
+    <!-- 3. Favicon Reference -->
+    <link rel="icon" href="{{ url_for('static', filename='icons/favicon.ico') }}" type="image/x-icon">
+
+    <!-- 4. Typography Font Engines -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- 5. Core Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    {% block extra_styles %}{% endblock %}
+</head>
+<body>
+
+    <!-- 6. Main Document Yield Block (To be populated by page templates) -->
+    {% block content %}{% endblock %}
+
+    <!-- 7. Javascript Controllers -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+    {% include 'partials/floating_help.html' %}
+    {% block extra_scripts %}{% endblock %}
+
+</body>
+</html>

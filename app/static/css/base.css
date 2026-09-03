@@ -1,0 +1,248 @@
+/*
+========================================================================
+Loop & Leisure by Mithra - Base Design System (base.css)
+========================================================================
+Description: Global CSS Custom Properties, Typography, Browser Reset,
+Media Query Breakpoints, and Utility Layout Classes.
+========================================================================
+*/
+
+/* ---------------------------------------------------------------------
+   1. Global Variables & Color Palette
+   --------------------------------------------------------------------- */
+:root {
+    /* Color Palette - Premium Linen, Vanilla, Ivory & Warm Cream */
+    --color-bg-primary: hsl(42, 40%, 96%);        /* Warm vanilla-linen ivory */
+    --color-bg-secondary: hsl(38, 30%, 92%);      /* Soft warm cream accent */
+    --color-bg-tertiary: hsl(35, 22%, 87%);       /* Cozy oatmeal-sand */
+    --color-card-bg: hsl(44, 38%, 99%);           /* Near-white warm paper */
+    
+    --color-text-primary: hsl(24, 15%, 15%);      /* Rich warm charcoal */
+    --color-text-secondary: hsl(24, 10%, 40%);    /* Soft warm grey */
+    --color-text-muted: hsl(24, 8%, 60%);         /* Muted oatmeal grey */
+    
+    --color-primary: hsl(18, 38%, 65%);           /* Terracotta rose-beige */
+    --color-primary-hover: hsl(18, 34%, 55%);     /* Terracotta shadow hover */
+    --color-primary-light: hsl(18, 45%, 95%);     /* Very soft warm rose blush */
+    --color-accent-gold: hsl(30, 48%, 54%);       /* Subtle warm gold */
+    --color-accent-gold-hover: hsl(30, 52%, 46%); /* Deeper warm gold hover */
+    
+    --color-accent: hsl(120, 9%, 58%);            /* Elegant soft sage green */
+    --color-accent-hover: hsl(120, 8%, 48%);     /* Deep sage green */
+    --color-accent-light: hsl(120, 15%, 95%);    /* Soft sage mist */
+    
+    --color-border: hsl(27, 15%, 85%);           /* Linen border line */
+    --color-border-light: hsl(27, 15%, 92%);     /* Subtle dividing line */
+    
+    --color-success: hsl(98, 15%, 45%);          /* Olive green */
+    --color-warning: hsl(28, 55%, 60%);          /* Warm ochre */
+    --color-error: hsl(8, 45%, 58%);            /* Dusty rose-clay red */
+
+    /* Typography Definitions */
+    --font-family-logo: 'Cormorant Garamond', Georgia, serif; /* Luxury editorial serif for brand */
+    --font-family-headings: 'Outfit', sans-serif;
+    --font-family-body: 'Inter', sans-serif;
+
+    /* Base Typography Scale (Mobile First) */
+    --text-h1: 2.25rem;       /* 36px */
+    --text-h2: 1.75rem;       /* 28px */
+    --text-h3: 1.375rem;      /* 22px */
+    --text-body: 1.0rem;      /* 16px */
+    --text-caption: 0.875rem; /* 14px */
+    --text-btn: 0.875rem;      /* 14px */
+    --text-nav: 0.9375rem;     /* 15px */
+
+    /* Font Weight Options */
+    --fw-light: 300;
+    --fw-normal: 400;
+    --fw-medium: 500;
+    --fw-semibold: 600;
+    --fw-bold: 700;
+    --fw-extrabold: 800;
+
+    /* Line Heights */
+    --lh-headings: 1.25;
+    --lh-body: 1.6;
+
+    /* Layout Spacing Rem Scale */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1.0rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2.0rem;
+    --spacing-2xl: 3.0rem;
+    --spacing-3xl: 4.0rem;
+
+    /* Visual Border Radii */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 16px;
+    --border-radius-round: 9999px;
+    
+    /* Box Shadow Scales */
+    --shadow-sm: 0 1px 3px rgba(44, 37, 32, 0.08);
+    --shadow-md: 0 4px 12px rgba(44, 37, 32, 0.05);
+    --shadow-lg: 0 8px 24px rgba(44, 37, 32, 0.08);
+
+    /* Micro-Animation Curves & Timings */
+    --transition-fast: 150ms cubic-bezier(0.25, 1, 0.5, 1);
+    --transition-normal: 300ms cubic-bezier(0.25, 1, 0.5, 1);
+    --transition-slow: 500ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Scaling typography scales on large desktop layouts */
+@media (min-width: 1024px) {
+    :root {
+        --text-h1: 3.0rem;       /* 48px */
+        --text-h2: 2.25rem;      /* 36px */
+        --text-h3: 1.625rem;     /* 26px */
+        --text-body: 1.0rem;     /* 16px */
+    }
+}
+
+/* ---------------------------------------------------------------------
+   2. CSS Reset
+   --------------------------------------------------------------------- */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    /* Subtle premium multi-stop linen gradient — extremely soft, like handmade paper */
+    background-color: var(--color-bg-primary);
+    background-image:
+        radial-gradient(ellipse at top left,    hsl(44, 45%, 96%) 0%,   transparent 55%),
+        radial-gradient(ellipse at bottom right, hsl(32, 30%, 94%) 0%,  transparent 55%),
+        linear-gradient(155deg, hsl(42, 40%, 96%) 0%, hsl(38, 32%, 95%) 55%, hsl(34, 26%, 94%) 100%);
+    color: var(--color-text-primary);
+    font-family: var(--font-family-body);
+    font-size: var(--text-body);
+    line-height: var(--lh-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---------------------------------------------------------------------
+   3. Typography Resets
+   --------------------------------------------------------------------- */
+h1, h2, h3 {
+    font-family: var(--font-family-headings);
+    color: var(--color-text-primary);
+    line-height: var(--lh-headings);
+    font-weight: var(--fw-semibold);
+}
+
+h1 {
+    font-size: var(--text-h1);
+    font-weight: var(--fw-bold);
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: var(--text-h2);
+    letter-spacing: -0.01em;
+}
+
+h3 {
+    font-size: var(--text-h3);
+}
+
+p {
+    margin-bottom: var(--spacing-md);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    height: auto;
+}
+
+/* ---------------------------------------------------------------------
+   4. Accessibility Focus Controls
+   --------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* ---------------------------------------------------------------------
+   5. Page Layout Primitives
+   --------------------------------------------------------------------- */
+.container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+    max-width: 1200px;
+}
+
+@media (min-width: 640px) {
+    .container {
+        padding-left: var(--spacing-lg);
+        padding-right: var(--spacing-lg);
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        padding-left: var(--spacing-xl);
+        padding-right: var(--spacing-xl);
+    }
+}
+
+/* Standard Flex Containers */
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Layout Spacing Helpers */
+.mb-none { margin-bottom: 0; }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mb-xl { margin-bottom: var(--spacing-xl); }
+
+/* ---------------------------------------------------------------------
+   6. Motion Hook Targets (Future animation classes hook here)
+   --------------------------------------------------------------------- */
+.transition-smooth {
+    transition: var(--transition-normal);
+}

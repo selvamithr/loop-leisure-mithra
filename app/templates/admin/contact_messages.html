@@ -1,0 +1,73 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Contact Messages | Admin{% endblock %}
+{% block meta_description %}Admin view of contact enquiries.{% endblock %}
+
+{% block content %}
+<div class="admin-layout">
+  <aside class="admin-sidebar">
+  <div class="admin-brand">
+    <span class="admin-brand-title">Loop & Leisure</span>
+    <span class="admin-brand-subtitle">Admin Dashboard</span>
+  </div>
+  <nav class="admin-nav">
+    <a href="{{ url_for('admin.dashboard') }}" class="admin-nav-item">Dashboard</a>
+    <a href="{{ url_for('admin.orders') }}" class="admin-nav-item">Orders</a>
+    <a href="{{ url_for('admin.contact_messages') }}" class="admin-nav-item active">Contact Messages</a>
+    <a href="{{ url_for('admin.admin_products') }}" class="admin-nav-item{% if request.endpoint in ('admin.admin_products', 'admin.product_add', 'admin.product_edit') %} active{% endif %}">Products</a>
+                <a href="{{ url_for('admin.logout') }}" class="admin-nav-item" style="color: #ef4444; margin-top: auto;">Logout</a>
+  </nav>
+</aside>
+  <main class="admin-content">
+    <section class="admin-contact-messages" style="padding: 2rem 0;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+      <h1 style="font-family: 'Outfit', sans-serif; font-size: 2.5rem; color: hsl(30,40%,20%); margin-bottom: 1.5rem;">Contact Messages</h1>
+      {% if messages %}
+        <table style="width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.9); backdrop-filter: blur(6px);">
+          <thead>
+            <tr style="background: hsl(30,20%,90%);">
+              <th style="padding: 0.75rem; text-align: left;">ID</th>
+              <th style="padding: 0.75rem; text-align: left;">Name</th>
+              <th style="padding: 0.75rem; text-align: left;">Email</th>
+              <th style="padding: 0.75rem; text-align: left;">Phone</th>
+              <th style="padding: 0.75rem; text-align: left;">Subject</th>
+              <th style="padding: 0.75rem; text-align: left;">Message</th>
+              <th style="padding: 0.75rem; text-align: left;">Created</th>
+              <th style="padding: 0.75rem; text-align: left;">Status</th>
+              <th style="padding: 0.75rem; text-align: left;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for msg in messages %}
+            <tr style="border-top: 1px solid #ddd;">
+              <td style="padding: 0.5rem;">{{ msg.id }}</td>
+              <td style="padding: 0.5rem;">{{ msg.name }}</td>
+              <td style="padding: 0.5rem;">{{ msg.email }}</td>
+              <td style="padding: 0.5rem;">{{ msg.phone or '' }}</td>
+              <td style="padding: 0.5rem;">{{ msg.subject }}</td>
+              <td style="padding: 0.5rem; max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ msg.message }}</td>
+              <td style="padding: 0.5rem;">{{ msg.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+              <td style="padding: 0.5rem;">{{ msg.status.value }}</td>
+              <td style="padding: 0.5rem;">
+                <form method="post" action="{{ url_for('admin.mark_contact_message_read', msg_id=msg.id) }}" style="display:inline;">
+                  <button type="submit" class="btn btn-sm" style="margin-right:4px;">Mark Read</button>
+                </form>
+                <form method="post" action="{{ url_for('admin.mark_contact_message_replied', msg_id=msg.id) }}" style="display:inline;">
+                  <button type="submit" class="btn btn-sm" style="margin-right:4px;">Mark Replied</button>
+                </form>
+                <form method="post" action="{{ url_for('admin.delete_contact_message', msg_id=msg.id) }}" style="display:inline;" onsubmit="return confirm('Delete this message?');">
+                  <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      {% else %}
+        <p style="font-family: 'Inter', sans-serif; color: hsl(30,20%,30%);">No contact messages found.</p>
+      {% endif %}
+    </div>
+  </section>
+  </main>
+</div>
+{% endblock %}

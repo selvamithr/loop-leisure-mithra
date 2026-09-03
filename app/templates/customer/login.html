@@ -1,0 +1,49 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Log In | Loop & Leisure by Mithra{% endblock %}
+{% block meta_description %}Log in to your Loop & Leisure account.{% endblock %}
+
+{% block content %}
+    {% include 'partials/navbar.html' %}
+
+    <main class="auth-page section">
+        <div class="container flex-center">
+            <div class="card auth-card">
+                
+                <!-- Flash Messages -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                    <div class="flash-messages">
+                      {% for category, message in messages %}
+                        <div class="badge badge-{{ category }} auth-flash">{{ message }}</div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% endwith %}
+
+                <div class="auth-header text-center">
+                    <h1 class="auth-title" style="font-family: var(--font-family-logo); font-size: var(--text-h1); color: var(--color-primary); margin-bottom: var(--spacing-sm);">Welcome Back</h1>
+                    <p class="auth-subtitle" style="color: var(--color-text-muted);">Please enter your details to sign in.</p>
+                </div>
+
+                <form method="POST" action="{{ url_for('customer.login', next=request.args.get('next', '')) }}" class="auth-form" style="margin-top: var(--spacing-xl);">
+                    <div class="form-group" style="margin-bottom: var(--spacing-md);">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="hello@example.com" required>
+                    </div>
+                    
+                    <div class="form-group" style="margin-bottom: var(--spacing-xl);">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Sign In</button>
+                </form>
+
+                <div class="auth-footer text-center" style="margin-top: var(--spacing-xl); font-size: var(--text-caption); color: var(--color-text-muted);">
+                    Don't have an account? <a href="{{ url_for('customer.register') }}" style="color: var(--color-accent-gold); font-weight: var(--fw-medium); text-decoration: none;">Create one here</a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

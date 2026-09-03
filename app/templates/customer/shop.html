@@ -1,0 +1,232 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Shop Our Collection | Loop & Leisure by Mithra{% endblock %}
+{% block meta_description %}Discover handcrafted crochet creations made with love.{% endblock %}
+
+{% block content %}
+    <!-- ── Navigation Bar ── -->
+    {% include 'partials/navbar.html' %}
+
+    <!-- ── Shop Header ── -->
+    <header class="shop-header">
+        <div class="container">
+            <h1 class="shop-title">Shop Our Collection</h1>
+            <p class="shop-subtitle">Discover handcrafted crochet creations made with love.</p>
+        </div>
+    </header>
+
+    <!-- ── Shop Filters ── -->
+    <section class="shop-filters-section">
+        <div class="container">
+            <div class="shop-filters" id="shopFilters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="bouquets">Bouquets</button>
+                <button class="filter-btn" data-filter="keychains">Keychains</button>
+                <button class="filter-btn" data-filter="amigurumi">Amigurumi</button>
+                <button class="filter-btn" data-filter="accessories">Accessories</button>
+            
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ── Shop Grid ── -->
+    <section class="shop-grid-section section">
+        <div class="container">
+            <div class="shop-grid" id="shopGrid">
+                {% for product in products %}
+                <div class="shop-product-card" data-category="{{ product.category|lower }}">
+                    <div class="shop-product-img-wrap">
+                        {% if product.images and product.images|length > 0 %}
+                            <img src="{{ product.images[0].image_path }}" alt="{{ product.name }}" class="shop-product-img" loading="lazy">
+                        {% else %}
+                            <img src="https://picsum.photos/seed/{{ product.slug }}/500/600" alt="{{ product.name }}" class="shop-product-img" loading="lazy">
+                        {% endif %}
+                    </div>
+                    <div class="shop-product-info">
+                        <div class="shop-product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="shop-product-title">{{ product.name }}</h3>
+                        <div class="shop-product-category">{{ product.category|capitalize }}</div>
+                        <div class="shop-product-price">&#8377;{{ '%.2f' % product.price }}</div>
+                        <a href="{{ url_for('customer.product', slug=product.slug) }}" class="btn btn-primary shop-product-btn">View Product</a>
+                    </div>
+                </div>
+                {% endfor %}
+                </div>
+        </div>
+    </section>
+
+    <!-- ── Shop Grid ── -->
+    <section class="shop-grid-section section">
+        <div class="container">
+            <div class="shop-grid" id="shopGrid">
+                
+                <!-- Product 1 -->
+                <div class="shop-product-card" data-category="bouquets">
+                    <div class="shop-product-img-wrap">
+                        <img src="https://picsum.photos/seed/rose/500/600" alt="Crochet Rose Bouquet" class="shop-product-img" loading="lazy">
+                    </div>
+                    <div class="shop-product-info">
+                        <div class="shop-product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="shop-product-title">Crochet Rose Bouquet</h3>
+                        <div class="shop-product-category">Bouquets</div>
+                        <div class="shop-product-price">$45.00</div>
+                        <a href="/product?slug=crochet-rose-bouquet" class="btn btn-primary shop-product-btn">View Product</a>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="shop-product-card" data-category="bouquets">
+                    <div class="shop-product-img-wrap">
+                        <img src="https://picsum.photos/seed/sunflower/500/600" alt="Sunflower Bouquet" class="shop-product-img" loading="lazy">
+                    </div>
+                    <div class="shop-product-info">
+                        <div class="shop-product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="shop-product-title">Sunflower Bouquet</h3>
+                        <div class="shop-product-category">Bouquets</div>
+                        <div class="shop-product-price">$55.00</div>
+                        <a href="/product?slug=sunflower-bouquet" class="btn btn-primary shop-product-btn">View Product</a>
+                    </div>
+                </div>
+
+
+                <!-- Product 4 -->
+                <div class="shop-product-card" data-category="amigurumi">
+                    <div class="shop-product-img-wrap">
+                        <img src="https://picsum.photos/seed/teddy/500/600" alt="Teddy Amigurumi" class="shop-product-img" loading="lazy">
+                    </div>
+                    <div class="shop-product-info">
+                        <div class="shop-product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="shop-product-title">Teddy Amigurumi</h3>
+                        <div class="shop-product-category">Amigurumi</div>
+                        <div class="shop-product-price">$38.00</div>
+                        <a href="/product?slug=teddy-amigurumi" class="btn btn-primary shop-product-btn">View Product</a>
+                    </div>
+                </div>
+
+                <!-- Product 5 -->
+                <div class="shop-product-card" data-category="bouquets">
+                    <div class="shop-product-img-wrap">
+                        <img src="https://picsum.photos/seed/daisy/500/600" alt="Daisy Bouquet" class="shop-product-img" loading="lazy">
+                    </div>
+                    <div class="shop-product-info">
+                        <div class="shop-product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="shop-product-title">Daisy Bouquet</h3>
+                        <div class="shop-product-category">Bouquets</div>
+                        <div class="shop-product-price">$40.00</div>
+                        <a href="/product?slug=daisy-bouquet" class="btn btn-primary shop-product-btn">View Product</a>
+                    </div>
+                </div>
+
+                <!-- Product 6 -->
+                <div class="shop-product-card" data-category="bouquets">
+                    <div class="shop-product-img-wrap">
+                        <img src="https://picsum.photos/seed/tulip/500/600" alt="Tulip Bouquet" class="shop-product-img" loading="lazy">
+                    </div>
+                    <div class="shop-product-info">
+                        <div class="shop-product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="shop-product-title">Tulip Bouquet</h3>
+                        <div class="shop-product-category">Bouquets</div>
+                        <div class="shop-product-price">$42.00</div>
+                        <a href="/product?slug=tulip-bouquet" class="btn btn-primary shop-product-btn">View Product</a>
+                    </div>
+                </div>
+
+                <!-- Product 7 -->
+                <div class="shop-product-card" data-category="keychains">
+                    <div class="shop-product-img-wrap">
+                        <img src="https://picsum.photos/seed/heart/500/600" alt="Mini Heart Keychain" class="shop-product-img" loading="lazy">
+                    </div>
+                    <div class="shop-product-info">
+                        <div class="shop-product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="shop-product-title">Mini Heart Keychain</h3>
+                        <div class="shop-product-category">Keychains</div>
+                        <div class="shop-product-price">$15.00</div>
+                        <a href="/product?slug=mini-heart-keychain" class="btn btn-primary shop-product-btn">View Product</a>
+                    </div>
+                </div>
+
+                <!-- Product 8 -->
+                <div class="shop-product-card" data-category="accessories">
+                    <div class="shop-product-img-wrap">
+                        <img src="https://picsum.photos/seed/bookmark/500/600" alt="Flower Bookmark" class="shop-product-img" loading="lazy">
+                    </div>
+                    <div class="shop-product-info">
+                        <div class="shop-product-rating" aria-label="5 out of 5 stars">★★★★★</div>
+                        <h3 class="shop-product-title">Flower Bookmark</h3>
+                        <div class="shop-product-category">Accessories</div>
+                        <div class="shop-product-price">$12.00</div>
+                        <a href="/product?slug=flower-bookmark" class="btn btn-primary shop-product-btn">View Product</a>
+                    </div>
+                </div>
+
+            
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================
+         PREMIUM FOOTER (Exact Copy)
+    ================================================================ -->
+    <footer class="premium-footer" aria-label="Footer">
+        <div class="container">
+            <div class="footer-grid">
+                
+                <!-- Column 1: Brand -->
+                <div class="footer-col brand-col">
+                    <div class="footer-brand">
+                        <span class="brand-title">Loop & Leisure</span>
+                        <span class="brand-subtitle">by Mithra</span>
+                    </div>
+                    <p class="footer-desc">
+                        Handcrafted crochet creations made with love for every special moment.
+                    </p>
+                </div>
+
+                <!-- Column 2: Quick Links -->
+                <div class="footer-col">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/shop">Shop</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                        <li><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Customer Support -->
+                <div class="footer-col">
+                    <h3 class="footer-heading">Customer Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="/shipping">Shipping Policy</a></li>
+                        <li><a href="/returns">Returns</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Contact -->
+                <div class="footer-col">
+                    <h3 class="footer-heading">Contact</h3>
+                    <ul class="footer-contact">
+                        <li><a href="mailto:hello@loopandleisure.com">hello@loopandleisure.com</a></li>
+                        <li><a href="tel:+910000000000">+91 00000 00000</a></li>
+                        <li>Coimbatore, Tamil Nadu</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Loop & Leisure by Mithra. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/shop.js') }}"></script>
+{% endblock %}

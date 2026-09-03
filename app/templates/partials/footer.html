@@ -1,0 +1,11 @@
+{% raw %}
+<footer style="background: hsl(30, 20%, 90%); padding: 2rem 0; text-align: center; font-family: 'Inter', sans-serif; color: hsl(30, 30%, 25%);">
+  <p>&copy; {{ now().year }} Loop & Leisure. All rights reserved.</p>
+  <nav style="margin-top: 0.5rem;">
+    <a href="{{ url_for('customer.index') }}" style="margin: 0 0.5rem; color: inherit; text-decoration: none;">Home</a>
+    <a href="{{ url_for('customer.about') }}" style="margin: 0 0.5rem; color: inherit; text-decoration: none;">About</a>
+    <a href="{{ url_for('customer.faq') }}" style="margin: 0 0.5rem; color: inherit; text-decoration: none;">FAQ</a>
+    <a href="{{ url_for('customer.contact') }}" style="margin: 0 0.5rem; color: inherit; text-decoration: none;">Contact</a>
+  </nav>
+</footer>
+{% endraw %}
